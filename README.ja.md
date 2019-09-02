@@ -43,7 +43,7 @@
 
 ## マニュアル
 このアプリのマニュアルは公式サイトにあります。
-<https://asada.website/brighterandbigger/>
+<https://asada.website/brighterandbigger/j/manual.html>
 
 ## 動作条件
 
