@@ -1,12 +1,12 @@
-# BrighterAndBigger
+# Brighter and Bigger
 
-This is an open source code of the **“BrighterAndBigger"** Android version 2.0.
+This is an open source code of the **“Brighter and Bigger"** Android version 2.0.
 
 <p align="center">
 <img src="https://asada.website/brighterandbigger/favicon.ico">
 </p>
 
-## What is "BrighterAndBigger"?
+## What is the "Brighter and Bigger"?
 
 - A reading assistance tool for people who have difficulty reading small letters.
 
@@ -14,13 +14,23 @@ This is an open source code of the **“BrighterAndBigger"** Android version 2.0
 - Presbyopia is a normal condition for people over the age of 40, which arises from age-related changes in the anatomy of the eye. Moreover, it becomes difficult to read small letters due to eye illnesses, such as cataracts and low vision.
 - This application helps you to read small letters by making the images bigger, brighter and clearer with scientific color changing methods.
 
-"Brighter and Bigger" has been fully modified and is now in version 2. 
-This version incorporates various functions for assisting persons with weak eyesight, illness of the eye, etc.
+<p align="center">
+<img src="http://asada.website/brighterandbigger/my_images/BootA-e2.0.jpg" width="240">　
+</p>
+
+## Features
+
+- Shows you fine print bigger, brighter and clearer.
+
+- "Brightness Reverse" mode and "Monochrome" mode are supported. These modes are suitable for people with cataracts and low vision.
+- "Tilted Angle Correction" mode, which revises the distortion of images when you read books, etc. from a tilted angle, is supported.
+- Maximum magnification of up to 20 times is supported so that you can use this tool as a monocle when you would like to see distant objects even if blurred.
 
 <p align="center">
-<img src="http://asada.website/brighterandbigger/my_images/Boot-e2.0.jpg" width="240"> 
-<img src="https://asada.website/brighterandbigger/my_images/HomeD-e2.0.jpg" width="240"> 
+<img src="https://asada.website/brighterandbigger/my_images/HomeA-e2.0.jpg" width="360">   
+<img src="https://asada.website/brighterandbigger/my_images/HomeA2-e2.0.jpg" width="360">
 </p>
+
 
 ## Announcement
 Announcement of making Open-Source version is here.  
@@ -32,7 +42,7 @@ Official website of the "Chromatic Vision Simulator" is here.
 
 ## User's Guide
 User's Guide of this application is in the official website.  
-<https://asada.website/brighterandbigger/e/manual.html
+<https://asada.website/brighterandbigger/e/manual.html>
 
 ## Requirements
 

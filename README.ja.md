@@ -9,32 +9,31 @@
 ## 「明るく大きく」とは?
 
 - 「明るく大きく」は、老視や眼の病気などで小さな文字などが読みにくい人のための読字補助ツールです。
+
 - 人は誰でも加齢と共に眼の水晶体の機能が衰え、小さな字が読みにくく、視界も暗くなります。また、白内障や弱視など、眼の病気が原因で文字が読みにくくなることもあります。
 - このアプリは、小さな文字を、色彩処理により「明るく」、「大きく」、「くっきり」とさせて、快適に読むための補助をします。
-- 「明るく大きく」が全面改訂され、バージョン2になりました。このバージョンには、眼の病気などで視力が弱い人を補助するための様々な機能が盛り込まれています。
 
 <p align="center">
-<img src="https://asada.website/brighterandbigger/my_images/Boot-j2.0.jpg" width="240"> 
-<img src="https://asada.website/brighterandbigger/my_images/HomeD-j2.0.jpg" width="240"> 
+<img src="https://asada.website/brighterandbigger/my_images/BootA-j2.0.jpg" width="240">   
 </p>
 
 ## 特徴
 
-読みにくい文字を、「明るく」、「大きく」、「くっきり」と表示することができます。
-色彩処理により、元の色をなるべく保ったまま、「明るく」「くっきり」とすることができます。
-白内障や弱視などの人の読みやすさ向上のために、黒字に白などで表示する「明度反転」モードや、表示色を限定する「モノクローム」モード（2.0以降のみ）を備えています。
-斜め上から本などを読むときに、歪みを補正して読みやすくする「斜め上から補正」をサポートしました。（2.0以降のみ）
-ぼやけながらも遠くを見るための単眼鏡的な使い方をするために、最大倍率は20倍までサポートしています。（2.0以降のみ）
-色彩学の理論に基づき、博士（医学・メディアデザイン学）である作者により開発されました。
+- 読みにくい文字を、「明るく」、「大きく」、「くっきり」と表示することができます。
+
+- 色彩処理により、元の色をなるべく保ったまま、「明るく」「くっきり」とすることができます。
+- 白内障や弱視などの人の読みやすさ向上のために、黒字に白などで表示する「明度反転」モードや、表示色を限定する「モノクローム」モードを備えています。
+- 斜め上から本などを読むときに、歪みを補正して読みやすくする「斜め上から補正」をサポートしました。
+- ぼやけながらも遠くを見るための単眼鏡的な使い方をするために、最大倍率は20倍までサポートしています。
 
 <p align="center">
-<img src="https://asada.website/brighterandbigger/my_images/Home0-j2.0.jpg" width="240"> 
-<img src="https://asada.website/brighterandbigger/my_images/Home1-j2.0.jpg" width="240"> 
+<img src="https://asada.website/brighterandbigger/my_images/HomeA-j2.0.jpg" width="360">   
+<img src="https://asada.website/brighterandbigger/my_images/HomeA2-j2.0.jpg" width="360"> 
 </p>
 
 
 ## アナウンス
-オープンソース化に当たってのアナウンスはこちら。
+オープンソース化に当たってのアナウンスはこちら。  
 <https://asada.website/brighterandbigger/j/opensource.html>
 
 ## 公式ウェブサイト
@@ -42,7 +41,7 @@
 <https://asada.website/brighterandbigger/>
 
 ## マニュアル
-このアプリのマニュアルは公式サイトにあります。
+このアプリのマニュアルは公式サイトにあります。  
 <https://asada.website/brighterandbigger/j/manual.html>
 
 ## 動作条件
