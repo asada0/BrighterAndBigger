@@ -99,7 +99,7 @@ Where,
 
 <img src="https://latex.codecogs.com/gif.latex?u^{'}=\frac{4X}{X&plus;15Y&plus;3Z}" title="u^{'}=\frac{4X}{X+15Y+3Z}" />
 
-<img src="https://latex.codecogs.com/gif.latex?v^{'}=\frac{9X}{X&plus;15Y&plus;3Z}" title="v^{'}=\frac{9X}{X+15Y+3Z}" />
+<img src="https://latex.codecogs.com/gif.latex?v^{'}=\frac{9Y}{X&plus;15Y&plus;3Z}" title="v^{'}=\frac{9Y}{X+15Y+3Z}" />
 
 (4) Brighter. Only lightness L\* value is used for changing "Brighter" in CIELUV uniform color space. The chromaticity is not changed.
 Increase (brighter) or decrease (darker) lightness L\* according to the value of the “Brighter Dial."

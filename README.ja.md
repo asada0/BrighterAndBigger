@@ -100,7 +100,7 @@ D65光源では、
 
 <img src="https://latex.codecogs.com/gif.latex?u^{'}=\frac{4X}{X&plus;15Y&plus;3Z}" title="u^{'}=\frac{4X}{X+15Y+3Z}" />
 
-<img src="https://latex.codecogs.com/gif.latex?v^{'}=\frac{9X}{X&plus;15Y&plus;3Z}" title="v^{'}=\frac{9X}{X+15Y+3Z}" />
+<img src="https://latex.codecogs.com/gif.latex?v^{'}=\frac{9Y}{X&plus;15Y&plus;3Z}" title="v^{'}=\frac{9Y}{X+15Y+3Z}" />
 
 (4) 明るく。CIELUV均等色空間において、明度L* のみを変更することによって明るくする。色度は変更しない。「明るく」ダイヤルの値 brightness に応じて明度 L\* を増加（明るく）減少（暗く）する。
 
