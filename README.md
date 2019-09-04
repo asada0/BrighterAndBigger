@@ -83,7 +83,7 @@ NumberPicker - Copyright 2018 ShawnLin013 (MIT license).
 
 <img src="https://latex.codecogs.com/gif.latex?L^{*}=\begin{cases}&space;9.033\frac{Y}{Y_{n}}&space;&&space;\text{&space;if&space;}&space;\frac{Y}{Y_{n}}\leq0.0088565&space;\\&space;1.16(\frac{Y}{Y_{n}})^{\frac{1}{3}}-0.16&&space;\text{&space;if&space;}&space;\frac{Y}{Y_{n}}&gt;0.0088565&space;\end{cases}" title="L^{*}=\begin{cases} 9.033\frac{Y}{Y_{n}} & \text{ if } \frac{Y}{Y_{n}}\leq0.0088565 \\ 1.16(\frac{Y}{Y_{n}})^{\frac{1}{3}}-0.16& \text{ if } \frac{Y}{Y_{n}}&gt;0.0088565 \end{cases}" />
 
-(Where, <img src="https://latex.codecogs.com/gif.latex?0&space;\leq&space;L^{*}\leq&space;1" title="0 \leq L^{*}\leq 1" /> is assumed.)
+(caution: <img src="https://latex.codecogs.com/gif.latex?0&space;\leq&space;L^{*}\leq&space;1" title="0 \leq L^{*}\leq 1" /> is assumed, not 100.)
 
 <img src="https://latex.codecogs.com/gif.latex?u^{*}&space;=&space;13L^{*}\cdot&space;(u^{'}-u_{n}^{'})" title="u^{*} = 13L^{*}\cdot (u^{'}-u_{n}^{'})" />
 
@@ -106,11 +106,15 @@ Increase (brighter) or decrease (darker) lightness L\* according to the value of
 
 <img src="https://latex.codecogs.com/gif.latex?L_{bright}^{*}=L_{original}^{*}&space;&plus;&space;brightness" title="L_{bright}^{*}=L^{*} + brightness" />
 
+(<img src="https://latex.codecogs.com/gif.latex?-0.25\leq&space;brightness\leq&space;0.25" title="-0.25\leq brightness\leq 0.25" /> in this application.)
+
 ![result](https://asada.website/brighterandbigger/my_images/gif-brighter.gif)
 
 (fig.1) dial the Brighter. (The horizontal is the original, the vertical is the new lightness.)
+<br />
+<br />
 
-(5) Clearer。Only lightness L\* value is used for changing "Clearer" in CIELUV uniform color space. The chromaticity is not changed. Increase or decrease contrast by changing the slope of lightness L\* according to the value of the “Clearer Dial." Sigmoid function is used to change contrast smoothly。
+(5) Clearer. Only lightness L\* value is used for changing "Clearer" in CIELUV uniform color space. The chromaticity is not changed. Increase or decrease contrast by changing the slope of lightness L\* according to the value of the “Clearer Dial." Sigmoid function is used to change contrast smoothly.
 
 <img src="https://latex.codecogs.com/gif.latex?t_{0}&space;=&space;20\cdot&space;contrast&plus;1" title="t_{0} = 20\cdot contrast+1" />
 
@@ -120,13 +124,19 @@ Increase (brighter) or decrease (darker) lightness L\* according to the value of
 
 <img src="https://latex.codecogs.com/gif.latex?L_{clear}^{*}=\frac{y_{1}&space;-&space;y_{0}}{1-2y_{0}}" title="L_{clear}^{*}=\frac{y_{1} - y_{0}}{1-2y_{0}}" />
 
+(<img src="https://latex.codecogs.com/gif.latex?-1\leq&space;contrast\leq&space;1" title="-1\leq contrast\leq 1" /> in this application.)
+
 ![result](https://asada.website/brighterandbigger/my_images/gif-clearer.gif)
 
 (fig.2) dial the Clearer. (The horizontal is the original, the vertical is the new lightness.)
+<br />
+<br />
 
 ![result](https://asada.website/brighterandbigger/my_images/gif-brighterclearer.gif)
 
 (fig.3) dial the Brighter after Clearer. (The horizontal is the original, the vertical is the new lightness.)
+<br />
+<br />
 
 (6) Monochrome Mode
 

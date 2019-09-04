@@ -84,7 +84,7 @@ NumberPicker - Copyright 2018 ShawnLin013 (MIT license).
 
 <img src="https://latex.codecogs.com/gif.latex?L^{*}=\begin{cases}&space;9.033\frac{Y}{Y_{n}}&space;&&space;\text{&space;if&space;}&space;\frac{Y}{Y_{n}}\leq0.0088565&space;\\&space;1.16(\frac{Y}{Y_{n}})^{\frac{1}{3}}-0.16&&space;\text{&space;if&space;}&space;\frac{Y}{Y_{n}}&gt;0.0088565&space;\end{cases}" title="L^{*}=\begin{cases} 9.033\frac{Y}{Y_{n}} & \text{ if } \frac{Y}{Y_{n}}\leq0.0088565 \\ 1.16(\frac{Y}{Y_{n}})^{\frac{1}{3}}-0.16& \text{ if } \frac{Y}{Y_{n}}&gt;0.0088565 \end{cases}" />
 
-（ただし、<img src="https://latex.codecogs.com/gif.latex?0&space;\leq&space;L^{*}\leq&space;1" title="0 \leq L^{*}\leq 1" />としている。）
+（注意：<img src="https://latex.codecogs.com/gif.latex?0&space;\leq&space;L^{*}\leq&space;1" title="0 \leq L^{*}\leq 1" />としている。100ではない。）
 
 <img src="https://latex.codecogs.com/gif.latex?u^{*}&space;=&space;13L^{*}\cdot&space;(u^{'}-u_{n}^{'})" title="u^{*} = 13L^{*}\cdot (u^{'}-u_{n}^{'})" />
 
@@ -102,15 +102,19 @@ D65光源では、
 
 <img src="https://latex.codecogs.com/gif.latex?v^{'}=\frac{9Y}{X&plus;15Y&plus;3Z}" title="v^{'}=\frac{9Y}{X+15Y+3Z}" />
 
-(4) 明るく。CIELUV均等色空間において、明度L* のみを変更することによって明るくする。色度は変更しない。「明るく」ダイヤルの値 brightness に応じて明度 L\* を増加（明るく）減少（暗く）する。
+(4) 明るく。CIELUV均等色空間において、明度 L\* のみを変更することによって明るくする。色度は変更しない。「明るく」ダイヤルの値 brightness に応じて明度 L\* を増加（明るく）減少（暗く）する。
 
 <img src="https://latex.codecogs.com/gif.latex?L_{bright}^{*}=L_{original}^{*}&space;&plus;&space;brightness" title="L_{bright}^{*}=L^{*} + brightness" />
+
+( 本アプリケーションでは、<img src="https://latex.codecogs.com/gif.latex?-0.25\leq&space;brightness\leq&space;0.25" title="-0.25\leq brightness\leq 0.25" /> )
 
 ![result](https://asada.website/brighterandbigger/my_images/gif-brighter.gif)
 
 （付図1）明るくダイヤルを回す（横軸が変更前、縦軸が変更後の明度）
+<br />
+<br />
 
-(5) くっきり。CIELUV均等色空間において、明度L* のみを変更することによってくっきりさせる。色度は変更しない。「くっきり」ダイヤルの値 contrast に応じて明度 L\* の傾きを増加（コントラスをを高く）減少（コントラストを低く）する。なめらかに変化するようにシグモイド関数を使用している。
+(5) くっきり。CIELUV均等色空間において、明度 L\* のみを変更することによってくっきりさせる。色度は変更しない。「くっきり」ダイヤルの値 contrast に応じて明度 L\* の傾きを増加（コントラスをを高く）減少（コントラストを低く）する。なめらかに変化するようにシグモイド関数を使用している。
 
 <img src="https://latex.codecogs.com/gif.latex?t_{0}&space;=&space;20\cdot&space;contrast&plus;1" title="t_{0} = 20\cdot contrast+1" />
 
@@ -120,13 +124,19 @@ D65光源では、
 
 <img src="https://latex.codecogs.com/gif.latex?L_{clear}^{*}=\frac{y_{1}&space;-&space;y_{0}}{1-2y_{0}}" title="L_{clear}^{*}=\frac{y_{1} - y_{0}}{1-2y_{0}}" />
 
+( 本アプリケーションでは、<img src="https://latex.codecogs.com/gif.latex?-1\leq&space;contrast\leq&space;1" title="-1\leq contrast\leq 1" /> )
+
 ![result](https://asada.website/brighterandbigger/my_images/gif-clearer.gif)
 
 （付図2）くっきりダイヤルを回す（横軸が変更前、縦軸が変更後の明度）
+<br />
+<br />
 
 ![result](https://asada.website/brighterandbigger/my_images/gif-brighterclearer.gif)
 
 （付図3）くっきり後に明るくダイヤルを回す（横軸が変更前、縦軸が変更後の明度）
+<br />
+<br />
 
 (6) モノクロームモード
 
