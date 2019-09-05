@@ -181,3 +181,8 @@ D65光源では、
 <img src="https://latex.codecogs.com/gif.latex?y_{projection}&space;=\frac{y_{original}}{z}" title="y_{projection} =\frac{y_{original}}{z}" />
 
 ( 本アプリケーションでは、<img src="https://latex.codecogs.com/gif.latex?0.2\leq&space;ratio\leq&space;1" title="0.2\leq contrast\leq 1" /> )
+
+<p>
+<img src="https://asada.website/brighterandbigger/my_images/Home4-j2.0.jpg" width="360">  
+<img src="https://asada.website/brighterandbigger/my_images/Home5-j2.0.jpg" width="360">  
+</p>
