@@ -186,4 +186,4 @@ D65光源では、
 <img src="https://asada.website/brighterandbigger/my_images/Home4-j2.0.jpg" width="360">  
 <img src="https://asada.website/brighterandbigger/my_images/Home5-j2.0.jpg" width="360">  
 </p>
-（付図3）斜め上から補正、実行前（左）と実行後（右）
+（付図4）斜め上から補正、実行前（左）と実行後（右）
