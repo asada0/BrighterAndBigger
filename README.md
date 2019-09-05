@@ -138,9 +138,13 @@ Increase (brighter) or decrease (darker) lightness L\* according to the value of
 <br />
 <br />
 
-(6) Monochrome Mode
+(6) Brightness Reverse
 
-(6-1) In the monochrome mode, only the lightness is used, not the chromaticity of the original pixel.
+<img src="https://latex.codecogs.com/gif.latex?L_{reverse}^{*}=1-L_{original}^{*}" title="L_{reverse}^{*}=1-L_{original}^{*}" />
+
+(7) Monochrome Mode
+
+(7-1) In the monochrome mode, only the lightness is used, not the chromaticity of the original pixel.
 Obtain the chromaticity of the used color c1 (light) and c2 (dark)
 <img src="https://latex.codecogs.com/gif.latex?(u_{c1}^{'},&space;v_{c1}^{'}),(u_{c2}^{'},&space;v_{c2}^{'})" title="(u_{c1}^{'}, v_{c1}^{'}),(u_{c2}^{'}, v_{c2}^{'})" />
 in the u'v' chromaticity diagram (CIE1976UCS chromaticity diagram).
@@ -148,12 +152,12 @@ If there is only one color c1, c2 should be achromatic
 <img src="https://latex.codecogs.com/gif.latex?(u_{n}^{'},&space;v_{n}^{'})" title="(u_{n}^{'}, v_{n}^{'})" />.
 Use Equation 1 and Equation 2 for conversion from RGB to XYZ, and use Equation 3 (bottom one) to convert to u'v' chromaticity.
 
-(6-2) Change only the chromaticity,  keep the lightness L\* of the color before conversion. 
+(7-2) Change only the chromaticity,  keep the lightness L\* of the color before conversion. 
 If the lightness of a certain color c0 is L<sub>c0</sub>\*, the chromaticity of c0 (u<sub>c0new</sub>', v<sub>c0new</sub>') is obtained by linearly interpolating the chromaticities of c1 and c2 on the u′v′ chromaticity diagram plane, according to the value of the lightness L<sub>c0</sub>\*.
 
 <img src="https://latex.codecogs.com/gif.latex?(u_{c0new}^{'},&space;v_{c0new}^{'})=L_{c0}^{*}(u_{c1}^{'},&space;v_{c1}^{'})&plus;(1-L_{c0}^{*})(u_{c2}^{'},&space;v_{c2}^{'})" title="(u_{c0new}^{'}, v_{c0new}^{'})=L_{c0}^{*}(u_{c1}^{'}, v_{c1}^{'})+(1-L_{c0}^{*})(u_{c2}^{'}, v_{c2}^{'})" />
 
-(7) Convert color space from CIELUV to CIEXYZ. (CIE 1976 L\*u\*v\* Color Space)
+(8) Convert color space from CIELUV to CIEXYZ. (CIE 1976 L\*u\*v\* Color Space)
 
 <img src="https://latex.codecogs.com/gif.latex?Y=\begin{cases}&space;Y_{n}\cdot&space;L^{*}\cdot&space;0.11071&space;&&space;\text{&space;if&space;}&space;L^{*}\leq&space;0.08&space;\\&space;Y_{n}\cdot&space;(\frac{L^{*}&plus;0.16}{1.16})^{3}&space;&&space;\text{&space;if&space;}&space;L^{*}&gt;0.08&space;\end{cases}" title="Y=\begin{cases} Y_{n}\cdot L^{*}\cdot 0.11071 & \text{ if } L^{*}\leq 0.08 \\ Y_{n}\cdot (\frac{L^{*}+0.16}{1.16})^{3} & \text{ if } L^{*}&gt;0.08 \end{cases}" />
 
@@ -161,10 +165,20 @@ If the lightness of a certain color c0 is L<sub>c0</sub>\*, the chromaticity of 
 
 <img src="https://latex.codecogs.com/gif.latex?Z=Y\cdot&space;\frac{12-3u^{'}-20v^{'}}{4v^{'}}" title="Z=Y\cdot \frac{12-3u^{'}-20v^{'}}{4v^{'}}" />
 
-(8) Convert color space from CIEXYZ to sRGB. (IEC 61966-2-1)
+(9) Convert color space from CIEXYZ to sRGB. (IEC 61966-2-1)
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{pmatrix}&space;R_{linear}\\&space;G_{linear}\\&space;B_{linear}&space;\end{pmatrix}&space;=&space;\begin{pmatrix}&space;3.2406&space;&&space;-1.5372&space;&&space;-0.4986\\&space;-0.9689&space;&&space;1.8758&space;&&space;0.0415\\&space;0.0557&space;&&space;-0.2040&space;&&space;1.0570&space;\end{pmatrix}&space;\begin{pmatrix}&space;X\\&space;Y\\&space;Z&space;\end{pmatrix}" title="\begin{pmatrix} R_{linear}\\ G_{linear}\\ B_{linear} \end{pmatrix} = \begin{pmatrix} 3.2406 & -1.5372 & -0.4986\\ -0.9689 & 1.8758 & 0.0415\\ 0.0557 & -0.2040 & 1.0570 \end{pmatrix} \begin{pmatrix} X\\ Y\\ Z \end{pmatrix}" />
 
-(9) Convert RGB color from sRGB(linear) to sRGB(gammaed). (IEC 61966-2-1)
+(10) Convert RGB color from sRGB(linear) to sRGB(gammaed). (IEC 61966-2-1)
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{matrix}&space;R_{device}=1.055R_{linear}^{\frac{1}{2.4}}-0.055\\\\&space;G_{device}=1.055G_{linear}^{\frac{1}{2.4}}-0.055\\\\&space;B_{device}=1.055B_{linear}^{\frac{1}{2.4}}-0.055&space;\end{matrix}" title="\begin{matrix} R_{device}=1.055R_{linear}^{\frac{1}{2.4}}-0.055\\\\ G_{device}=1.055G_{linear}^{\frac{1}{2.4}}-0.055\\\\ B_{device}=1.055B_{linear}^{\frac{1}{2.4}}-0.055 \end{matrix}" />
+
+(11) Tilted Angle Correction (projection transform). This is achieved using OpenGL texture2DProj() in the application, but the formula should be as follows.
+
+<img src="https://latex.codecogs.com/gif.latex?z&space;=&space;(1-\frac{1}{ratio})y_{original}&plus;\frac{1}{ratio}" title="z = (1-\frac{1}{ratio})y_{original}+\frac{1}{ratio}" />
+
+<img src="https://latex.codecogs.com/gif.latex?x_{projection}&space;=&space;\frac{x_{original}&plus;0.5(1-\frac{1}{ratio})y_{original}-0.5(1-\frac{1}{ratio})}{z}" title="x_{projection} = \frac{x_{original}+0.5(1-\frac{1}{ratio})y_{original}-0.5(1-\frac{1}{ratio})}{z}" />
+
+<img src="https://latex.codecogs.com/gif.latex?y_{projection}&space;=\frac{y_{original}}{z}" title="y_{projection} =\frac{y_{original}}{z}" />
+
+( <img src="https://latex.codecogs.com/gif.latex?0.2\leq&space;ratio\leq&space;1" title="0.2\leq contrast\leq 1" /> in this application.)

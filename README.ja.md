@@ -138,20 +138,25 @@ D65光源では、
 <br />
 <br />
 
-(6) モノクロームモード
 
-(6-1) モノクロームモードでは元のピクセルの色度は使用せず、明度だけを使用する。
+(6) 明度反転
+
+<img src="https://latex.codecogs.com/gif.latex?L_{reverse}^{*}=1-L_{original}^{*}" title="L_{reverse}^{*}=1-L_{original}^{*}" />
+
+(7) モノクロームモード
+
+(7-1) モノクロームモードでは元のピクセルの色度は使用せず、明度だけを使用する。
 まず、使用するカラーc1（明）とカラーc2（暗）のu'v'色度図（CIE 1976 UCS色度図）における色度
 <img src="https://latex.codecogs.com/gif.latex?(u_{c1}^{'},&space;v_{c1}^{'}),(u_{c2}^{'},&space;v_{c2}^{'})" title="(u_{c1}^{'}, v_{c1}^{'}),(u_{c2}^{'}, v_{c2}^{'})" />
 を求める。1色（c1）のみの場合はc2を無彩色
 <img src="https://latex.codecogs.com/gif.latex?(u_{n}^{'},&space;v_{n}^{'})" title="(u_{n}^{'}, v_{n}^{'})" />
 とする。RGBからXYZへの変換は式1, 式2を、u'v'色度への変換には式3（下）を使用する。
 
-(6-2) 変換前の色の明度 L\* はキープし、色度のみを変える。ある色c0の明度が L<sub>c0</sub>\* とすると、その色度 (u<sub>c0new</sub>', v<sub>c0new</sub>') は、u'v'色度図平面上において、c1とc2の色度を L<sub>c0</sub>\* の値に応じて線形補間することによって求める。
+(7-2) 変換前の色の明度 L\* はキープし、色度のみを変える。ある色c0の明度が L<sub>c0</sub>\* とすると、その色度 (u<sub>c0new</sub>', v<sub>c0new</sub>') は、u'v'色度図平面上において、c1とc2の色度を L<sub>c0</sub>\* の値に応じて線形補間することによって求める。
 
 <img src="https://latex.codecogs.com/gif.latex?(u_{c0new}^{'},&space;v_{c0new}^{'})=L_{c0}^{*}(u_{c1}^{'},&space;v_{c1}^{'})&plus;(1-L_{c0}^{*})(u_{c2}^{'},&space;v_{c2}^{'})" title="(u_{conew}^{'}, v_{c0new}^{'})=L_{c0}^{*}(u_{c1}^{'}, v_{c1}^{'})+(1-L_{c0}^{*})(u_{c2}^{'}, v_{c2}^{'})" />
 
-(7) CIELUVからXYZに色空間を変換。 (CIE 1976 L\*u\*v\* Color Space) 
+(8) CIELUVからXYZに色空間を変換。 (CIE 1976 L\*u\*v\* Color Space) 
 
 <img src="https://latex.codecogs.com/gif.latex?Y=\begin{cases}&space;Y_{n}\cdot&space;L^{*}\cdot&space;0.11071&space;&&space;\text{&space;if&space;}&space;L^{*}\leq&space;0.08&space;\\&space;Y_{n}\cdot&space;(\frac{L^{*}&plus;0.16}{1.16})^{3}&space;&&space;\text{&space;if&space;}&space;L^{*}&gt;0.08&space;\end{cases}" title="Y=\begin{cases} Y_{n}\cdot L^{*}\cdot 0.11071 & \text{ if } L^{*}\leq 0.08 \\ Y_{n}\cdot (\frac{L^{*}+0.16}{1.16})^{3} & \text{ if } L^{*}&gt;0.08 \end{cases}" />
 
@@ -159,13 +164,20 @@ D65光源では、
 
 <img src="https://latex.codecogs.com/gif.latex?Z=Y\cdot&space;\frac{12-3u^{'}-20v^{'}}{4v^{'}}" title="Z=Y\cdot \frac{12-3u^{'}-20v^{'}}{4v^{'}}" />
 
-(8) CIEXYZからsRGBへ色空間の変換。 (IEC 61966-2-1)
+(9) CIEXYZからsRGBへ色空間の変換。 (IEC 61966-2-1)
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{pmatrix}&space;R_{linear}\\&space;G_{linear}\\&space;B_{linear}&space;\end{pmatrix}&space;=&space;\begin{pmatrix}&space;3.2406&space;&&space;-1.5372&space;&&space;-0.4986\\&space;-0.9689&space;&&space;1.8758&space;&&space;0.0415\\&space;0.0557&space;&&space;-0.2040&space;&&space;1.0570&space;\end{pmatrix}&space;\begin{pmatrix}&space;X\\&space;Y\\&space;Z&space;\end{pmatrix}" title="\begin{pmatrix} R_{linear}\\ G_{linear}\\ B_{linear} \end{pmatrix} = \begin{pmatrix} 3.2406 & -1.5372 & -0.4986\\ -0.9689 & 1.8758 & 0.0415\\ 0.0557 & -0.2040 & 1.0570 \end{pmatrix} \begin{pmatrix} X\\ Y\\ Z \end{pmatrix}" />
 
-(9) sRGB(linear)からsRGB(gammaed)へのRGB色の変換。 (IEC 61966-2-1)
+(10) sRGB(linear)からsRGB(gammaed)へのRGB色の変換。 (IEC 61966-2-1)
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{matrix}&space;R_{device}=1.055R_{linear}^{\frac{1}{2.4}}-0.055\\\\&space;G_{device}=1.055G_{linear}^{\frac{1}{2.4}}-0.055\\\\&space;B_{device}=1.055B_{linear}^{\frac{1}{2.4}}-0.055&space;\end{matrix}" title="\begin{matrix} R_{device}=1.055R_{linear}^{\frac{1}{2.4}}-0.055\\\\ G_{device}=1.055G_{linear}^{\frac{1}{2.4}}-0.055\\\\ B_{device}=1.055B_{linear}^{\frac{1}{2.4}}-0.055 \end{matrix}" />
 
+(11) 斜め上から補正（射影変換）。OpenGLのtexture2DProj()を使用して実現しているが、数式にすると以下になるはず。
 
+<img src="https://latex.codecogs.com/gif.latex?z&space;=&space;(1-\frac{1}{ratio})y_{original}&plus;\frac{1}{ratio}" title="z = (1-\frac{1}{ratio})y_{original}+\frac{1}{ratio}" />
 
+<img src="https://latex.codecogs.com/gif.latex?x_{projection}&space;=&space;\frac{x_{original}&plus;0.5(1-\frac{1}{ratio})y_{original}-0.5(1-\frac{1}{ratio})}{z}" title="x_{projection} = \frac{x_{original}+0.5(1-\frac{1}{ratio})y_{original}-0.5(1-\frac{1}{ratio})}{z}" />
+
+<img src="https://latex.codecogs.com/gif.latex?y_{projection}&space;=\frac{y_{original}}{z}" title="y_{projection} =\frac{y_{original}}{z}" />
+
+( 本アプリケーションでは、<img src="https://latex.codecogs.com/gif.latex?0.2\leq&space;ratio\leq&space;1" title="0.2\leq contrast\leq 1" /> )
