@@ -187,3 +187,4 @@ If the lightness of a certain color c0 is L<sub>c0</sub>\*, the chromaticity of 
 <img src="https://asada.website/brighterandbigger/my_images/Home4-e2.0.jpg" width="360">  
 <img src="https://asada.website/brighterandbigger/my_images/Home5-e2.0.jpg" width="360">  
 </p>
+(fig.4) Before(left) and after(right) Tilted Angle Correction.
