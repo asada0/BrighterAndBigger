@@ -2,7 +2,7 @@
 //  BBCamera.kt
 //  Brighter and Bigger
 //
-//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2019/08/20.
+//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2019/09/24.
 //  Copyright 2010-2019 Kazunori Asada. All rights reserved.
 //
 
@@ -41,6 +41,8 @@ class BBCamera(activity: Activity, textureID: Int) {
         const val INTENT_CAMERA_TROUBLE = "INTENT_CAMERA_TROUBLE"
         const val TIMER_FOCUSING = 7000L
         const val TIMER_TAP_TO_PASSIVE_FOCUS = 5000L
+        const val MAX_PREVIEW_WIDTH = 1920
+        const val MAX_PREVIEW_HEIGHT = 1080
     }
 
     enum class CameraPosition { NONE, BACK, FRONT }
@@ -114,8 +116,10 @@ class BBCamera(activity: Activity, textureID: Int) {
             if (facing != null && facing == targetFacing) {
                 val map: StreamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP) as StreamConfigurationMap
                 // Choose camera resolution
-                val sizes: Array<Size> = map.getOutputSizes(SurfaceTexture::class.java)
-                mCameraSize = chooseResolution(sizes)!!
+                val texSizes: Array<Size> = map.getOutputSizes(SurfaceTexture::class.java)
+                // val jpgSizes: Array<Size> = map.getOutputSizes(ImageFormat.JPEG)
+
+                mCameraSize = chooseResolution(texSizes)!!
                 // Choose camera frequency
                 val ranges = characteristics.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES)
                 mCameraFpsRange = chooseFPS(ranges!!)!!
@@ -293,7 +297,6 @@ class BBCamera(activity: Activity, textureID: Int) {
             mFreezeBuilder!!.set(CaptureRequest.CONTROL_AE_LOCK, false)
             mFreezeBuilder!!.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, mCameraFpsRange)
             mFreezeBuilder!!.set(CaptureRequest.FLASH_MODE, if (mTorchLight) CaptureRequest.FLASH_MODE_TORCH else CaptureRequest.FLASH_MODE_OFF)
-
         }
         if (mPreviewSession != null) {
             try {
@@ -337,14 +340,15 @@ class BBCamera(activity: Activity, textureID: Int) {
         if (isCameraDisplayTwisted(supportedSizes[0], displaySize)) {
             displaySize = Size(displaySize.height, displaySize.width)
         }
-
-        val larger: List<Size> = supportedSizes.filter { it.width >= displaySize.width && it.height >= displaySize.height }
+        val guaranteed: List<Size> = supportedSizes.filter { it.width <= MAX_PREVIEW_WIDTH && it.height <= MAX_PREVIEW_HEIGHT }
+        val larger: List<Size> = guaranteed.filter { displaySize.width <= it.width && displaySize.height <= it.height }
+        val noLarger: List<Size> = guaranteed.minus(larger)
         if (larger.isNotEmpty()) {
             // Choose a resolution whose width and height are larger than that of the display and which has a shortest distance between "width difference" and "height difference".
             return larger.minBy { (it.width - displaySize.width) * (it.width - displaySize.width) + (it.height - displaySize.height) * (it.height - displaySize.height) }
         }
         // If either the width or the height is smaller than that of the display, choose a resolution which has a shortest distance between "width difference" and "height difference".
-        return supportedSizes.minBy { (it.width - displaySize.width) * (it.width - displaySize.width) + (it.height - displaySize.height) * (it.height - displaySize.height) }
+        return noLarger.minBy { (it.width - displaySize.width) * (it.width - displaySize.width) + (it.height - displaySize.height) * (it.height - displaySize.height) }
     }
 
     // Choose a Camera FPS
