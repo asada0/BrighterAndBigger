@@ -11,10 +11,7 @@ package asada0.android.brighterbigger
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
@@ -27,9 +24,12 @@ import android.media.MediaActionSound
 import android.media.SoundPool
 import android.net.Uri
 import android.opengl.GLSurfaceView
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
+import android.provider.MediaStore
+import android.support.annotation.RequiresApi
 import android.support.constraint.ConstraintLayout
 import android.support.media.ExifInterface
 import android.support.v4.app.ActivityCompat
@@ -68,6 +68,7 @@ class MainActivity : Activity(), SensorEventListener {
         const val CAPTURE_ANIMATION_TIME = 1000L // 1 sec
         const val BUTTON_COLOR_DURATION = 500L // 0.5 sec
         const val JPEG_QUALITY = 60 // 60%
+        const val JPEG_MIME = "image/jpg"
 
         const val kBigIconRatio = 1.4f
         const val kBigTextRatio = 1.3f
@@ -590,7 +591,7 @@ class MainActivity : Activity(), SensorEventListener {
         enableAllButtons(true)
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         resetPan()
         if (mIsImageFrom != ImageFrom.CAMERA) {
@@ -1245,17 +1246,17 @@ class MainActivity : Activity(), SensorEventListener {
                         options.inJustDecodeBounds = true
                         BitmapFactory.decodeStream(stream, null, options)
                     } catch (e: IOException) {
-                        stream.close()
+                        stream!!.close()
                         mError!!.log(tag, "File read error - IOException(1).")
                         mError!!.show(R.string.sFileLoadError)
                         return
                     } catch (e: SecurityException) {
-                        stream.close()
+                        stream!!.close()
                         mError!!.log(tag, "File read error - SecurityException(1).")
                         mError!!.show(R.string.sFileLoadError)
                         return
                     } catch (e: OutOfMemoryError) {
-                        stream.close()
+                        stream!!.close()
                         mError!!.log(tag, "File read error - OutOfMemoryError(1).")
                         mError!!.show(R.string.sFileLoadError)
                         return
@@ -1295,12 +1296,12 @@ class MainActivity : Activity(), SensorEventListener {
                             }
                             break
                         } catch (e: IOException) {
-                            stream.close()
+                            stream!!.close()
                             mError!!.log(tag, "File read error - IOException(2).")
                             mError!!.show(R.string.sFileLoadError)
                             return
                         } catch (e: SecurityException) {
-                            stream.close()
+                            stream!!.close()
                             mError!!.log(tag, "File read error - SecurityException(2).")
                             mError!!.show(R.string.sFileLoadError)
                             return
@@ -1308,7 +1309,7 @@ class MainActivity : Activity(), SensorEventListener {
                             if (i < maxSampleLog2) {
                                 mError!!.log(tag, "OutOfMemoryError while file reading - SampleSize: ${2.0.pow(i).toInt()}, and will try with SampleSize [${2.0.pow(i + 1).toInt()}], continue.")
                             } else {
-                                stream.close()
+                                stream!!.close()
                                 mError!!.log(tag, "File read error - OutOfMemoryError, SampleSize: ${2.0.pow(i).toInt()}")
                                 mError!!.show(R.string.sFileLoadError)
                                 return
@@ -1709,11 +1710,16 @@ class MainActivity : Activity(), SensorEventListener {
                 if (bitmap == null) {
                     mError!!.log(tag, "Image get error - bitmap == null(1).")
                     mError!!.show(R.string.sFileSaveError)
+                    return
                 }
-                if (mHasStoragePermission) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     realSave(bitmap)
                 } else {
-                    requestPermission(fCamera = false, fStorage = true) { realSave(bitmap) }
+                    if (mHasStoragePermission) {
+                        realSave(bitmap)
+                    } else {
+                        requestPermission(fCamera = false, fStorage = true) { realSave(bitmap) }
+                    }
                 }
             }
         }
@@ -1766,6 +1772,12 @@ class MainActivity : Activity(), SensorEventListener {
         // Determination of file name
         val dateFormat = SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.US)
         val fileName = "bb_${dateFormat.format(Date())}.jpg"
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            saveImageAboveV30(bitmap, fileName)
+        } else {
+            saveImageUnderV30(bitmap, fileName)
+        }
+        /*
         val file = File(storageDir, fileName)
 
         // Save JPEG image to file
@@ -1790,6 +1802,81 @@ class MainActivity : Activity(), SensorEventListener {
         sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
 
         mError!!.log(tag, "Saved \"$fileName\".")
+        return true
+        */
+    }
+    private fun saveImageUnderV30(bitmap: Bitmap?, fileName: String): Boolean {
+        val storageDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        if (!storageDir.isDirectory) {
+            storageDir.mkdir()
+            if (!storageDir.isDirectory) {
+                mError!!.log(tag, "File save error - Cannot make directory.")
+                return false
+            }
+        }
+        val file = File(storageDir, fileName)
+        try {
+            val fos = FileOutputStream(file)
+            if (!bitmap!!.compress(Bitmap.CompressFormat.JPEG, JPEG_QUALITY, fos)) {
+                mError!!.log(tag, "File save error - bitmap.compress failed.")
+                return false
+            }
+            fos.close()
+        } catch (e: FileNotFoundException) {
+            mError!!.log(tag, "File save error - FileNotFoundException. Maybe don't have permission.")
+            return false
+        } catch (e: SecurityException) {
+            mError!!.log(tag, "File save error - SecurityException")
+            return false
+        } catch (e: IOException) {
+            mError!!.log(tag, "File save error - IOException.")
+            return false
+        }
+        // Request to register to gallery (MediaScan)
+        sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
+
+        mError!!.log(tag,"Saved \"$fileName\".")
+        return true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun saveImageAboveV30(bitmap: Bitmap?, fileName: String): Boolean {
+        val values = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+            put(MediaStore.MediaColumns.MIME_TYPE, JPEG_MIME)
+            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+            put(MediaStore.Images.Media.IS_PENDING, 1)
+        }
+
+        val collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        val uri = contentResolver.insert(collection, values)
+        if (uri == null) {
+            mError!!.log(tag, "File save error - uri == null.")
+            mError!!.show(R.string.sFileSaveError)
+            return false
+        }
+        try {
+            contentResolver.openFileDescriptor(uri, "w", null).use {
+                FileOutputStream(it!!.fileDescriptor).use { outputStream ->
+                    bitmap!!.compress(Bitmap.CompressFormat.JPEG, JPEG_QUALITY, outputStream)
+                }
+            }
+        } catch (e: FileNotFoundException) {
+            mError!!.log(tag, "File save error - FileNotFoundException.")
+            mError!!.show(R.string.sFileSaveError)
+            uri.let { orphanUri ->
+                contentResolver.delete(orphanUri, null, null)
+            }
+            return false
+
+        }
+        values.clear()
+        values.put(MediaStore.Images.Media.IS_PENDING, 0)
+        contentResolver.update(uri, values, null, null)
+
+        sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
+        mError!!.log(tag,"Saved \"$fileName\".")
+
         return true
     }
 
@@ -1921,15 +2008,15 @@ class MainActivity : Activity(), SensorEventListener {
         // Hide Tool Panel and Status when there is no touch for 10 seconds
         mUITimerHandler = Handler()
         mUITimerRunnable = Runnable { hideUI() }
-        mUITimerHandler!!.postDelayed(mUITimerRunnable, UI_HIDDEN_INTERVAL)
+        mUITimerHandler!!.postDelayed(mUITimerRunnable!!, UI_HIDDEN_INTERVAL)
 
         // Update status on every one second
         mStatusTimerHandler = Handler()
         mStatusTimerRunnable = Runnable {
             updateTextLabels()
-            mStatusTimerHandler!!.postDelayed(mStatusTimerRunnable, STATUS_INTERVAL)
+            mStatusTimerHandler!!.postDelayed(mStatusTimerRunnable!!, STATUS_INTERVAL)
         }
-        mStatusTimerHandler!!.postDelayed(mStatusTimerRunnable, STATUS_INTERVAL)
+        mStatusTimerHandler!!.postDelayed(mStatusTimerRunnable!!, STATUS_INTERVAL)
 
         // Hide Spinner display value
         mSpinTimerHandler = Handler()
@@ -1942,24 +2029,24 @@ class MainActivity : Activity(), SensorEventListener {
     private fun restartUITimer() {
         mUITimerHandler ?: return
         mUITimerRunnable ?: return
-        mUITimerHandler!!.removeCallbacks(mUITimerRunnable)
-        mUITimerHandler!!.postDelayed(mUITimerRunnable, UI_HIDDEN_INTERVAL)
+        mUITimerHandler!!.removeCallbacks(mUITimerRunnable!!)
+        mUITimerHandler!!.postDelayed(mUITimerRunnable!!, UI_HIDDEN_INTERVAL)
     }
 
     private fun restartSpinTimer() {
         mSpinTimerHandler ?: return
         mSpinTimerRunnable ?: return
-        mSpinTimerHandler!!.removeCallbacks(mSpinTimerRunnable)
-        mSpinTimerHandler!!.postDelayed(mSpinTimerRunnable, SPIN_HIDDEN_INTERVAL)
+        mSpinTimerHandler!!.removeCallbacks(mSpinTimerRunnable!!)
+        mSpinTimerHandler!!.postDelayed(mSpinTimerRunnable!!, SPIN_HIDDEN_INTERVAL)
     }
 
     private fun releaseTimers() {
         mUITimerHandler ?: return
         mStatusTimerHandler ?: return
         mSpinTimerHandler ?: return
-        mUITimerHandler!!.removeCallbacks(mUITimerRunnable)
-        mStatusTimerHandler!!.removeCallbacks(mStatusTimerRunnable)
-        mSpinTimerHandler!!.removeCallbacks(mSpinTimerRunnable)
+        mUITimerHandler!!.removeCallbacks(mUITimerRunnable!!)
+        mStatusTimerHandler!!.removeCallbacks(mStatusTimerRunnable!!)
+        mSpinTimerHandler!!.removeCallbacks(mSpinTimerRunnable!!)
         mUITimerHandler = null
         mStatusTimerHandler = null
         mSpinTimerHandler = null

@@ -591,13 +591,13 @@ class BBCamera(activity: Activity, textureID: Int) {
             mFocusState = FocusState.END
             mError.log(tag, "Focus timeout!")
         }
-        mFocusTimerHandler!!.postDelayed(mFocusTimerRunnable, TIMER_FOCUSING)
+        mFocusTimerHandler!!.postDelayed(mFocusTimerRunnable!!, TIMER_FOCUSING)
     }
 
     private fun focusTimerCancel() {
         mFocusTimerHandler ?: return
         mFocusTimerRunnable ?: return
-        mFocusTimerHandler!!.removeCallbacks(mFocusTimerRunnable)
+        mFocusTimerHandler!!.removeCallbacks(mFocusTimerRunnable!!)
         mFocusTimerHandler = null
     }
 
