@@ -42,6 +42,7 @@
 
     <string name="sProjectionPinchArea">斜め上から操作エリア</string>
     <string name="sManualView">マニュアル</string>
+    <string name="sPrivacyView">プライバシーポリシー</string>
 
     <string name="sDismiss">了解</string>
     <string name="sCameraError">カメラエラー</string>
@@ -93,6 +94,10 @@
 
     <string name="pref_title_how_to_use">マニュアル表示</string>
     <string name="pref_manual_html">manual_ja.html</string>
+
+    <string name="pref_title_privacy">プライバシーポリシー</string>
+    <string name="pref_privacy_html">privacy_ja.html</string>
+
     <string name="pref_category_application_info">アプリケーション情報</string>
     <string name="pref_title_version">バージョン</string>
     <string name="pref_title_copyright">Copyright © 2019</string>

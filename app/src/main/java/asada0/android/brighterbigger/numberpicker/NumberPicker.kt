@@ -11,8 +11,8 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.support.annotation.CallSuper
-import android.support.annotation.ColorInt
+import androidx.annotation.CallSuper
+import androidx.annotation.ColorInt
 import android.text.InputType
 import android.text.TextUtils
 import android.util.AttributeSet

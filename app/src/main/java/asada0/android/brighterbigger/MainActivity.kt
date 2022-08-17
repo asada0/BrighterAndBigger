@@ -29,11 +29,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
-import android.support.annotation.RequiresApi
-import android.support.constraint.ConstraintLayout
-import android.support.media.ExifInterface
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.exifinterface.media.ExifInterface
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.util.Size
 import android.util.TypedValue
 import android.util.TypedValue.COMPLEX_UNIT_PX
@@ -1341,7 +1341,9 @@ class MainActivity : Activity(), SensorEventListener {
     private fun exifRotateDegree(uri: Uri): Float {
         var orientation = 0
         try {
-            val exifInterface = ExifInterface(contentResolver.openInputStream(uri)!!)
+            val exifInterface = ExifInterface(
+                contentResolver.openInputStream(uri)!!
+            )
             orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
         } catch (e: Exception) {
             mError!!.log(tag, "error in exifRotateDegree, ignored.")

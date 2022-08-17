@@ -11,12 +11,12 @@ package asada0.android.brighterbigger
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.preference.ListPreference
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceCategory
-import android.support.v7.preference.PreferenceFragmentCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceFragmentCompat
 import kotlin.math.round
 
 class SettingsActivity : AppCompatActivity() {
@@ -54,6 +54,9 @@ class SettingsActivity : AppCompatActivity() {
 
             // Setup Manual Button
             setupManualButton()
+
+            // Setup Privacy Policy Button
+            setupPrivacyButton()
 
             // Disable Cont. Auto Focus OFF - Setting
             if (mPref.isOccurredTrouble(BBPreference.TROUBLE_NO_TAP_FOCUS_ANYWAY)) {
@@ -96,10 +99,18 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        private fun setupManualButton(){
+        private fun setupManualButton() {
             val manual = findPreference(getString(R.string.pref_key_manual))
             manual.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 startActivity(Intent(activity, ManualActivity::class.java))
+                true
+            }
+        }
+
+        private fun setupPrivacyButton() {
+            val privacy = findPreference(getString(R.string.pref_key_privacy))
+            privacy.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                startActivity(Intent(activity, PrivacyActivity::class.java))
                 true
             }
         }
@@ -183,7 +194,6 @@ class SettingsActivity : AppCompatActivity() {
             hideCustomColor(2)
             hideCustomColor(3)
         }
-
 
         private fun showCustomColor(type: Int) {
             val keyStr = when(type) {

@@ -42,6 +42,7 @@
 
     <string name="sProjectionPinchArea">Pinch Area of Tilted Angle Correction</string>
     <string name="sManualView">How To Use</string>
+    <string name="sPrivacyView">Privacy Policy</string>
 
     <string name="sDismiss">Dismiss</string>
     <string name="sCameraError">Camera Error</string>
@@ -93,6 +94,9 @@
 
     <string name="pref_title_how_to_use">How to Use</string>
     <string name="pref_manual_html">manual.html</string>
+
+    <string name="pref_title_privacy">Privacy Policy</string>
+    <string name="pref_privacy_html">privacy.html</string>
 
     <string name="pref_category_application_info">APPLICATION INFO.</string>
     <string name="pref_title_version">Version</string>
@@ -158,6 +162,7 @@
     <string name="pref_key_projection_bottom_ratio_int" translatable="false">projection_bottom_ratio_int</string>
     <string name="pref_key_reset_all" translatable="false">reset_all</string>
     <string name="pref_key_manual" translatable="false">manual</string>
+    <string name="pref_key_privacy" translatable="false">privacy</string>
     <string name="pref_key_camera_on_error4_occured" translatable="false">camera_on_error4_occured</string>
     <string name="pref_key_occured_trouble" translatable="false">occured_trouble</string>
 </resources>

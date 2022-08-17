@@ -9,7 +9,7 @@
 package asada0.android.brighterbigger
 
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_color_picker.*
 import kotlin.math.round

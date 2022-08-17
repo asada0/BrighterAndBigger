@@ -92,6 +92,11 @@
             app:key="@string/pref_key_manual"
             app:title="@string/pref_title_how_to_use"
             app:summary=">" />
+        <Preference
+            app:layout="@layout/style_preference_info"
+            app:key="@string/pref_key_privacy"
+            app:title="@string/pref_title_privacy"
+            app:summary=">" />
     </PreferenceCategory>
 
     <PreferenceCategory
