@@ -2,15 +2,17 @@
 //  ManualActivity.kt
 //  Brighter and Bigger
 //
-//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2019/08/05.
-//  Copyright 2010-2019 Kazunori Asada. All rights reserved.
+//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2023/10/08.
+//  Copyright 2010-2023 Kazunori Asada. All rights reserved.
 //
 
 package asada0.android.brighterbigger
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_manual.*
+import android.webkit.WebView
+
+//import kotlinx.android.synthetic.main.activity_manual.*
 
 class ManualActivity : AppCompatActivity() {
 
@@ -18,6 +20,7 @@ class ManualActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manual)
 
-        manual_view.loadUrl("file:///android_asset/" + getString(R.string.pref_manual_html))
+        val manualView = findViewById<WebView>(R.id.manual_view)
+        manualView.loadUrl("file:///android_asset/" + getString(R.string.pref_manual_html))
     }
 }

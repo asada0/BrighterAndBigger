@@ -2,8 +2,8 @@
 //  MainActivity.kt
 //  Brighter and Bigger
 //
-//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2019/08/20.
-//  Copyright 2010-2019 Kazunori Asada. All rights reserved.
+//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2023/10/08.
+//  Copyright 2010-2023 Kazunori Asada. All rights reserved.
 //
 
 package asada0.android.brighterbigger
@@ -45,8 +45,9 @@ import android.view.animation.TranslateAnimation
 import android.widget.*
 import android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_IDLE
 import android.widget.NumberPicker.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.popup_image_source.view.*
+import asada0.android.brighterbigger.databinding.ActivityMainBinding
+//import kotlinx.android.synthetic.main.activity_main.*
+//import kotlinx.android.synthetic.main.popup_image_source.view.*
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -113,6 +114,7 @@ class MainActivity : Activity(), SensorEventListener {
 
     // Private Variables
     private lateinit var mContext: Context
+    private lateinit var mBinding: ActivityMainBinding
     private var mViewCamera: GLSurfaceView? = null
     private var mViewFile: GLSurfaceView? = null
     private var mRendererCamera: BBGLRendererCamera? = null
@@ -232,14 +234,14 @@ class MainActivity : Activity(), SensorEventListener {
             field = projection
             mRendererCamera!!.mProjection = field
             mRendererFile!!.mProjection = field
-            button_projection.isSelected = field
+            mBinding.buttonProjection.isSelected = field
         }
 
     private var mLight: Boolean = false
         set(on) {
             field = on
             mRendererCamera!!.torchLight(on = field, immediately = mLightImmediately)
-            button_light.isSelected = field
+            mBinding.buttonLight.isSelected = field
         }
 
     private var mLightImmediately: Boolean = false
@@ -249,9 +251,9 @@ class MainActivity : Activity(), SensorEventListener {
             field = pause
             mRendererCamera!!.mPause = field
             mRendererFile!!.mPause = field
-            button_pause.isSelected = field
-            button_cont_autofocus_off.isEnabled = !field && (mIsImageFrom == ImageFrom.CAMERA) && !mSettingNoTapFocusAnyway
-            button_light.isEnabled = !field && (mIsImageFrom == ImageFrom.CAMERA) && cameraHasLight()
+            mBinding.buttonPause.isSelected = field
+            mBinding.buttonContAutofocusOff.isEnabled = !field && (mIsImageFrom == ImageFrom.CAMERA) && !mSettingNoTapFocusAnyway
+            mBinding.buttonLight.isEnabled = !field && (mIsImageFrom == ImageFrom.CAMERA) && cameraHasLight()
         }
 
     private var mReverse: Boolean = false
@@ -259,7 +261,7 @@ class MainActivity : Activity(), SensorEventListener {
             field = reverse
             mRendererCamera!!.mReverse = field
             mRendererFile!!.mReverse = field
-            button_reverse.isSelected = field
+            mBinding.buttonReverse.isSelected = field
         }
 
     private var mPanX: Float = 0.0f
@@ -281,9 +283,9 @@ class MainActivity : Activity(), SensorEventListener {
             field = from
             mRendererCamera!!.mIsImageFrom = field
             mRendererFile!!.mIsImageFrom = field
-            button_cont_autofocus_off.isEnabled = (field == ImageFrom.CAMERA) && !mPause && !mSettingNoTapFocusAnyway
-            button_light.isEnabled = (field == ImageFrom.CAMERA) && !mPause && cameraHasLight()
-            button_pause.isEnabled = (field != ImageFrom.FILE)
+            mBinding.buttonContAutofocusOff.isEnabled = (field == ImageFrom.CAMERA) && !mPause && !mSettingNoTapFocusAnyway
+            mBinding.buttonLight.isEnabled = (field == ImageFrom.CAMERA) && !mPause && cameraHasLight()
+            mBinding.buttonPause.isEnabled = (field != ImageFrom.FILE)
         }
 
     // Variables set in Settings
@@ -345,7 +347,7 @@ class MainActivity : Activity(), SensorEventListener {
             if (!mChangeFocusModeOnNextWindowFocused) {
                  mRendererCamera!!.continuousFocus(!on)
             }
-            button_cont_autofocus_off.isSelected = on
+            mBinding.buttonContAutofocusOff.isSelected = on
         }
 
     private var mSettingProjectionBottomRatio: Float = PROJECTION_DEFAULT
@@ -381,7 +383,10 @@ class MainActivity : Activity(), SensorEventListener {
     // App Initialization after permission check
     private fun init() {
         mContext = this.applicationContext
-        setContentView(R.layout.activity_main)
+        val layoutInflater = LayoutInflater.from(mContext)
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
+        //setContentView(R.layout.activity_main)
 
         // Version Update
         checkAppVersion(mContext)
@@ -454,11 +459,11 @@ class MainActivity : Activity(), SensorEventListener {
         val sm = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL)
 
-        if (gl_surface_view_camera != null) {
-            gl_surface_view_camera.onResume()
+        if (mBinding.glSurfaceViewCamera != null) {
+            mBinding.glSurfaceViewCamera.onResume()
         }
-        if (gl_surface_view_file != null) {
-            gl_surface_view_file.onResume()
+        if (mBinding.glSurfaceViewFile != null) {
+            mBinding.glSurfaceViewFile.onResume()
         }
 
         // Setup Broadcast
@@ -487,11 +492,11 @@ class MainActivity : Activity(), SensorEventListener {
         val sm = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sm.unregisterListener(this)
 
-        if (gl_surface_view_camera != null) {
-            gl_surface_view_camera.onPause()
+        if (mBinding.glSurfaceViewCamera != null) {
+            mBinding.glSurfaceViewCamera.onPause()
         }
-        if (gl_surface_view_file != null) {
-            gl_surface_view_file.onPause()
+        if (mBinding.glSurfaceViewFile != null) {
+            mBinding.glSurfaceViewFile.onPause()
         }
 
         // Turn off the Light
@@ -605,15 +610,15 @@ class MainActivity : Activity(), SensorEventListener {
 
     // Setup Global Layout Listener for small screen devices
     private fun setupGlobalLayoutListener() {
-        val observer: ViewTreeObserver  = button_image_source.viewTreeObserver
+        val observer: ViewTreeObserver  = mBinding.buttonImageSource.viewTreeObserver
         observer.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (mIsShowingUI) {
                     // Show or not fourth Buttons
                     val newVisibility = if (can4thButtonsShow()) View.VISIBLE else View.GONE
-                    if (button_image_source.visibility != newVisibility) {
-                        button_cont_autofocus_off.visibility = newVisibility
-                        button_image_source.visibility = newVisibility
+                    if (mBinding.buttonImageSource.visibility != newVisibility) {
+                        mBinding.buttonContAutofocusOff.visibility = newVisibility
+                        mBinding.buttonImageSource.visibility = newVisibility
                         observer.removeOnGlobalLayoutListener(this)
                     }
                 } else {
@@ -629,7 +634,7 @@ class MainActivity : Activity(), SensorEventListener {
 
     private fun can4thButtonsShow(): Boolean {
         val buttonHeight = (mDefaultButtonSize.height * (if (mSettingBigIcons) kBigIconRatio else 1.0f)).spToPx(mContext)
-        val statusHeight = text_status_brighter.height
+        val statusHeight = mBinding.textStatusBrighter.height
         return getDisplaySize().height / 2 > (buttonHeight + statusHeight) * 4
     }
 
@@ -771,7 +776,7 @@ class MainActivity : Activity(), SensorEventListener {
 
     private fun initViewAndRendererCamera() {
         // Image from Camera
-        mViewCamera = gl_surface_view_camera
+        mViewCamera = mBinding.glSurfaceViewCamera
         mViewCamera!!.setEGLContextClientVersion(2)
         mRendererCamera = BBGLRendererCamera(this.applicationContext, this)
         mViewCamera!!.setRenderer(mRendererCamera)
@@ -795,7 +800,7 @@ class MainActivity : Activity(), SensorEventListener {
 
     private fun initViewAndRendererFile() {
         // Image from File
-        mViewFile = gl_surface_view_file
+        mViewFile = mBinding.glSurfaceViewFile
         mViewFile!!.setEGLContextClientVersion(2)
         mRendererFile = BBGLRendererFile(this.applicationContext, this)
         mViewFile!!.setRenderer(mRendererFile)
@@ -818,7 +823,7 @@ class MainActivity : Activity(), SensorEventListener {
     }
 
     private fun setupBrightnessPicker() {
-        mPickerBrightness = picker_brightness
+        mPickerBrightness = mBinding.pickerBrightness
         mPickerBrightness!!.minValue = 0
         mPickerBrightness!!.maxValue = ((BRIGHTNESS_MAX - BRIGHTNESS_MIN) / BRIGHTNESS_STEP).toInt()
 
@@ -850,7 +855,7 @@ class MainActivity : Activity(), SensorEventListener {
     }
 
     private fun setupMagnificationPicker() {
-        mPickerMagnification = picker_magnification
+        mPickerMagnification = mBinding.pickerMagnification
         mPickerMagnification!!.minValue = 0
 
         setupMagnificationWheel()
@@ -888,7 +893,7 @@ class MainActivity : Activity(), SensorEventListener {
     }
 
     private fun setupContrastPicker() {
-        mPickerContrast = picker_contrast
+        mPickerContrast = mBinding.pickerContrast
         mPickerContrast!!.minValue = 0
         mPickerContrast!!.maxValue = ((CONTRAST_MAX - CONTRAST_MIN) / CONTRAST_STEP).toInt()
 
@@ -985,19 +990,19 @@ class MainActivity : Activity(), SensorEventListener {
     }
 
     private fun setupUIArray() {
-        mButtons = arrayOf(button_settings, button_projection, button_light, button_cont_autofocus_off, button_pause, button_reverse, button_camera, button_image_source)
-        m4thButtons = arrayOf(button_cont_autofocus_off, button_image_source)
-        mPickers = arrayOf(picker_brightness, picker_magnification, picker_contrast)
-        mStatusLabels = arrayOf(text_status_brighter, text_status_bigger, text_status_clearer)
-        mImageViews = arrayOf(icon_brightness, icon_magnification, icon_contrast, view_under_brightness, view_under_magnification, view_under_contrast, view_under_brightness2, view_under_magnification2, view_under_contrast2)
-        mSpinLabels = arrayOf(text_brighter_number, text_bigger_number, text_clearer_number)
+        mButtons = arrayOf(mBinding.buttonSettings, mBinding.buttonProjection, mBinding.buttonLight, mBinding.buttonContAutofocusOff, mBinding.buttonPause, mBinding.buttonReverse, mBinding.buttonCamera, mBinding.buttonImageSource)
+        m4thButtons = arrayOf(mBinding.buttonContAutofocusOff, mBinding.buttonImageSource)
+        mPickers = arrayOf(mBinding.pickerBrightness, mBinding.pickerMagnification, mBinding.pickerContrast)
+        mStatusLabels = arrayOf(mBinding.textStatusBigger, mBinding.textStatusBigger, mBinding.textStatusClearer)
+        mImageViews = arrayOf(mBinding.iconBrightness, mBinding.iconMagnification, mBinding.iconContrast, mBinding.viewUnderBrightness, mBinding.viewUnderMagnification, mBinding.viewUnderContrast, mBinding.viewUnderBrightness2, mBinding.viewUnderMagnification2, mBinding.viewUnderContrast2)
+        mSpinLabels = arrayOf(mBinding.textBrighterNumber, mBinding.textBiggerNumber, mBinding.textClearerNumber)
         mRadios = arrayOf(mRadioRearCamera, mRadioFrontCamera, mRadioFile)
-        mIcons = arrayOf(icon_brightness, icon_magnification, icon_contrast)
+        mIcons = arrayOf(mBinding.iconBrightness, mBinding.iconMagnification, mBinding.iconContrast)
     }
 
     // Setup Setting Button
     private fun setupSettingsButton() {
-        button_settings.setOnClickListener {
+        mBinding.buttonSettings.setOnClickListener {
             settingsToPreferences()
             startActivity(Intent(this, SettingsActivity::class.java))
             beepSound()
@@ -1006,7 +1011,7 @@ class MainActivity : Activity(), SensorEventListener {
 
     // Setup Projection Button
     private fun setupProjectionButton() {
-        button_projection.setOnClickListener {
+        mBinding.buttonProjection.setOnClickListener {
             mProjection = !mProjection
             restartUITimer()
             beepSound()
@@ -1015,7 +1020,7 @@ class MainActivity : Activity(), SensorEventListener {
 
     // Setup Torch Button
     private fun setupLightButton() {
-        button_light.setOnClickListener {
+        mBinding.buttonLight.setOnClickListener {
             mLightImmediately = true
             mLight = !mLight
             mLightImmediately = false
@@ -1026,26 +1031,26 @@ class MainActivity : Activity(), SensorEventListener {
 
     // Setup Cont. Auto Focus OFF Button
     private fun setupContAutoFocusOffButton() {
-        button_cont_autofocus_off.setOnClickListener {
-            button_cont_autofocus_off.isEnabled = false
+        mBinding.buttonContAutofocusOff.setOnClickListener {
+            mBinding.buttonContAutofocusOff.isEnabled = false
             mChangeFocusModeOnNextWindowFocused = false
             mSettingContAutoFocusOff = !mSettingContAutoFocusOff
             settingsToPreferences()
             restartUITimer()
             beepSound()
-            button_cont_autofocus_off.isEnabled = !mSettingNoTapFocusAnyway
+            mBinding.buttonContAutofocusOff.isEnabled = !mSettingNoTapFocusAnyway
         }
     }
 
     // Setup Pause Button
     private fun setupPauseButton() {
-        button_pause.setOnClickListener {
+        mBinding.buttonPause.setOnClickListener {
             if (mIsImageFrom != ImageFrom.FILE) {
                 if (!mPause) {
                     mRendererCamera!!.freezeCaptureStart()
                     enableAllButtons(false)
                 } else {
-                    button_pause.isEnabled = false
+                    mBinding.buttonPause.isEnabled = false
                     if (mRendererCamera!!.reOpenCamera()) {
                         setImageFromCamera()
                         mPause = false
@@ -1055,7 +1060,7 @@ class MainActivity : Activity(), SensorEventListener {
                     } else {
                         mError!!.log(tag, "Pause error - can not open camera.")
                     }
-                    button_pause.isEnabled = true
+                    mBinding.buttonPause.isEnabled = true
                 }
             }
         }
@@ -1063,7 +1068,7 @@ class MainActivity : Activity(), SensorEventListener {
 
     // Setup Reverse Button
     private fun setupReverseButton() {
-        button_reverse.setOnClickListener {
+        mBinding.buttonReverse.setOnClickListener {
             mReverse = !mReverse
             restartUITimer()
             beepSound()
@@ -1073,7 +1078,7 @@ class MainActivity : Activity(), SensorEventListener {
     // Setup Save button
     private fun setupSaveButton() {
         // Push Save button
-        button_camera.setOnClickListener {
+        mBinding.buttonCamera.setOnClickListener {
             if (mIsImageFrom == ImageFrom.CAMERA) { // camera
                 mRendererCamera!!.captureRequest()
             } else { // file
@@ -1096,7 +1101,7 @@ class MainActivity : Activity(), SensorEventListener {
         mPopupImageSource!!.isFocusable = true
 
         // Push Appear Image Source Popup button
-        button_image_source.setOnClickListener {
+        mBinding.buttonImageSource.setOnClickListener {
             val popupView: View = mPopupImageSource!!.contentView
             popupView.measure(0, 0)
             mPopupImageSource!!.showAsDropDown(it, -popupView.measuredWidth - OFFSET_X_POPUP, -(it.height + popupView.measuredHeight) / 2)
@@ -1118,7 +1123,7 @@ class MainActivity : Activity(), SensorEventListener {
             isDelayRunning = false
         }
 
-        mRadioRearCamera = mPopupImageSourceLayout!!.radio_rear
+        mRadioRearCamera = mPopupImageSourceLayout!!.findViewById(R.id.radio_rear)
         mRadioRearCamera!!.setOnClickListener {
             if (!isDelayRunning) {
                 checkRadioSource(rear = true, front = false, file = false)
@@ -1135,7 +1140,7 @@ class MainActivity : Activity(), SensorEventListener {
             restartUITimer()
         }
 
-        mRadioFrontCamera = mPopupImageSourceLayout!!.radio_front
+        mRadioFrontCamera = mPopupImageSourceLayout!!.findViewById(R.id.radio_front)
         mRadioFrontCamera!!.setOnClickListener {
             if (!isDelayRunning) {
                 checkRadioSource(rear = false, front = true, file = false)
@@ -1152,7 +1157,7 @@ class MainActivity : Activity(), SensorEventListener {
             restartUITimer()
         }
 
-        mRadioFile = mPopupImageSourceLayout!!.radio_file
+        mRadioFile = mPopupImageSourceLayout!!.findViewById(R.id.radio_file)
         mRadioFile!!.setOnClickListener {
             if (!isDelayRunning) {
                 checkRadioSource(rear = false, front = false, file = true)
@@ -1373,9 +1378,9 @@ class MainActivity : Activity(), SensorEventListener {
         for (button in mButtons) {
             button!!.isEnabled = enable
         }
-        button_pause.isEnabled = (mIsImageFrom != ImageFrom.FILE) && enable
-        button_cont_autofocus_off.isEnabled = (mIsImageFrom == ImageFrom.CAMERA) && !mPause && enable && !mSettingNoTapFocusAnyway
-        button_light.isEnabled = (mIsImageFrom == ImageFrom.CAMERA) && !mPause && enable && cameraHasLight()
+        mBinding.buttonPause.isEnabled = (mIsImageFrom != ImageFrom.FILE) && enable
+        mBinding.buttonContAutofocusOff.isEnabled = (mIsImageFrom == ImageFrom.CAMERA) && !mPause && enable && !mSettingNoTapFocusAnyway
+        mBinding.buttonLight.isEnabled = (mIsImageFrom == ImageFrom.CAMERA) && !mPause && enable && cameraHasLight()
     }
 
     private fun setupGestures() {
@@ -1386,12 +1391,12 @@ class MainActivity : Activity(), SensorEventListener {
                     mWhichGesture = PinchGestureFor.ZOOM
                 } else {
                     val xy = intArrayOf(0, 0)
-                    view_projection_pinch_area.getLocationOnScreen(xy)
-                    val pinchAreaRect = Rect(xy[0], xy[1], xy[0] + view_projection_pinch_area.width, xy[1] + view_projection_pinch_area.height)
+                    mBinding.viewProjectionPinchArea.getLocationOnScreen(xy)
+                    val pinchAreaRect = Rect(xy[0], xy[1], xy[0] + mBinding.viewProjectionPinchArea.width, xy[1] + mBinding.viewProjectionPinchArea.height)
                     if (!pinchAreaRect.contains(detector.focusX.toInt(), detector.focusY.toInt())) {
                         mWhichGesture = PinchGestureFor.ZOOM
                     } else {
-                        view_projection_pinch_area!!.visibility = View.VISIBLE
+                        mBinding.viewProjectionPinchArea!!.visibility = View.VISIBLE
                         mWhichGesture = PinchGestureFor.PROJECTION
                     }
                 }
@@ -1424,7 +1429,7 @@ class MainActivity : Activity(), SensorEventListener {
                         mWhichGesture = PinchGestureFor.NONE
                     }
                     PinchGestureFor.PROJECTION -> {
-                        view_projection_pinch_area!!.visibility = View.INVISIBLE
+                        mBinding.viewProjectionPinchArea!!.visibility = View.INVISIBLE
                         mWhichGesture = PinchGestureFor.NONE
                     }
                     PinchGestureFor.NONE -> {
@@ -1451,7 +1456,7 @@ class MainActivity : Activity(), SensorEventListener {
             override fun onLongPress(event: MotionEvent) {
                 super.onLongPress(event)
                 if (mSettingLongPressPause) {
-                    button_pause.performClick()
+                    mBinding.buttonPause.performClick()
                 }
             }
 
@@ -1678,22 +1683,22 @@ class MainActivity : Activity(), SensorEventListener {
     }
 
     private fun setupTextLabels() {
-        mLabelBrightness = text_status_brighter
+        mLabelBrightness = mBinding.textStatusBrighter
         mLabelBrightness!!.text = getString(R.string.sFormatBrighter).format(brightnessToUser(mBrightness))
 
-        mLabelZoom = text_status_bigger
+        mLabelZoom = mBinding.textStatusBigger
         mLabelZoom!!.text = getString(R.string.sFormatBigger).format(zoomToUser(mMagnification))
 
-        mLabelContrast = text_status_clearer
+        mLabelContrast = mBinding.textStatusClearer
         mLabelContrast!!.text = getString(R.string.sFormatClearer).format(contrastToUser(mContrast))
 
-        mLabelBrightnessNumber = text_brighter_number
+        mLabelBrightnessNumber = mBinding.textBrighterNumber
         mLabelBrightnessNumber!!.text = getString(R.string.sFormatBrighterNumber).format(brightnessToUser(mBrightness))
 
-        mLabelZoomNumber = text_bigger_number
+        mLabelZoomNumber = mBinding.textBiggerNumber
         mLabelZoomNumber!!.text = getString(R.string.sFormatBiggerNumber).format(zoomToUser(mMagnification))
 
-        mLabelContrastNumber = text_clearer_number
+        mLabelContrastNumber = mBinding.textClearerNumber
         mLabelContrastNumber!!.text = getString(R.string.sFormatClearerNumber).format(contrastToUser(mContrast))
     }
 
@@ -1893,11 +1898,11 @@ class MainActivity : Activity(), SensorEventListener {
         imageview.z = 1.0f
 
         val location = intArrayOf(0, 0)
-        button_camera.getLocationInWindow(location)
+        mBinding.buttonCamera.getLocationInWindow(location)
         val animation = ScaleAnimation(
                 1.0f, 0.0f, 1.0f, 0.0f,
-                Animation.ABSOLUTE, location[0] + button_camera.measuredWidth / 2.0f,
-                Animation.ABSOLUTE, (location[1] + button_camera.measuredHeight / 2.0f))
+                Animation.ABSOLUTE, location[0] + mBinding.buttonCamera.measuredWidth / 2.0f,
+                Animation.ABSOLUTE, (location[1] + mBinding.buttonCamera.measuredHeight / 2.0f))
         animation.duration = CAPTURE_ANIMATION_TIME
         animation.repeatCount = 0
         animation.fillAfter = true
@@ -1906,13 +1911,13 @@ class MainActivity : Activity(), SensorEventListener {
             }
 
             override fun onAnimationEnd(p0: Animation?) {
-                frame_layout.removeView(imageview)
+                mBinding.frameLayout.removeView(imageview)
             }
 
             override fun onAnimationRepeat(p0: Animation?) {
             }
         })
-        frame_layout.addView(imageview, LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT))
+        mBinding.frameLayout.addView(imageview, LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT))
         imageview.startAnimation(animation)
     }
 
@@ -1976,7 +1981,7 @@ class MainActivity : Activity(), SensorEventListener {
                 } else if (troubleID == BBPreference.TROUBLE_NO_TAP_FOCUS_ANYWAY) {
                     if (mRendererCamera != null) {
                         mError!!.log(tag, "Main - Received No tap focus anyway intent.")
-                        button_cont_autofocus_off.isEnabled = false
+                        mBinding.buttonContAutofocusOff.isEnabled = false
                         mSettingNoTapFocusAnyway = true
                         settingsToPreferences()
                         AlertDialog.Builder(context)
@@ -2125,7 +2130,7 @@ class MainActivity : Activity(), SensorEventListener {
     }
 
     private fun getDisplaySize(): Size {
-        return(Size(gl_surface_view_camera.width, gl_surface_view_camera.height))
+        return(Size(mBinding.glSurfaceViewCamera.width, mBinding.glSurfaceViewCamera.height))
     }
 
     private fun getDefaultDisplaySize(): Size {
@@ -2217,22 +2222,22 @@ class MainActivity : Activity(), SensorEventListener {
     }
 
     private fun showCameraView() {
-        if (gl_surface_view_camera != null) {
-            gl_surface_view_camera.visibility = View.VISIBLE
+        if (mBinding.glSurfaceViewCamera != null) {
+            mBinding.glSurfaceViewCamera.visibility = View.VISIBLE
         }
 
-        if (gl_surface_view_file != null) {
-            gl_surface_view_file.visibility = View.INVISIBLE
+        if (mBinding.glSurfaceViewFile != null) {
+            mBinding.glSurfaceViewFile.visibility = View.INVISIBLE
         }
     }
 
     private fun showFileView() {
-        if (gl_surface_view_camera != null) {
-            gl_surface_view_camera.visibility = View.INVISIBLE
+        if (mBinding.glSurfaceViewCamera != null) {
+            mBinding.glSurfaceViewCamera.visibility = View.INVISIBLE
         }
 
-        if (gl_surface_view_file != null) {
-            gl_surface_view_file.visibility = View.VISIBLE
+        if (mBinding.glSurfaceViewFile != null) {
+            mBinding.glSurfaceViewFile.visibility = View.VISIBLE
         }
     }
 
@@ -2265,7 +2270,7 @@ class MainActivity : Activity(), SensorEventListener {
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN, KeyEvent.KEYCODE_VOLUME_UP -> {
                 if (mSettingVolumeButtonShutter) {
-                    button_camera.performClick()
+                    mBinding.buttonCamera.performClick()
                     return true
                 }
             }
@@ -2332,7 +2337,7 @@ class MainActivity : Activity(), SensorEventListener {
             if (mShakeCount >= SHAKE_COUNT_MAX) {
                 if (mIsShowingUI) {
                     if (mPause) {
-                        button_pause.performClick()
+                        mBinding.buttonPause.performClick()
                     }
                     mProjection = false
                     resetAllControls()

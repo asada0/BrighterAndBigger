@@ -274,7 +274,7 @@
         app:np_selectedTextSize="20dp"
         app:np_textSize="20dp"
         app:np_wheelItemCount="5"
-        />
+    />
 
     <asada0.android.brighterbigger.numberpicker.NumberPicker
         android:id="@+id/picker_magnification"

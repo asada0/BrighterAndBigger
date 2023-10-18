@@ -2,12 +2,13 @@
 //  SettingActivity.kt
 //  Brighter and Bigger
 //
-//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2019/08/20.
-//  Copyright 2010-2019 Kazunori Asada. All rights reserved.
+//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2023/10/08.
+//  Copyright 2010-2023 Kazunori Asada. All rights reserved.
 //
 
 package asada0.android.brighterbigger
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import kotlin.math.round
 
 class SettingsActivity : AppCompatActivity() {
@@ -43,8 +45,8 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.pref_settings, rootKey)
-            mPref = BBPreference(this.context!!)
-            mMonoModeCategory = findPreference(getString(R.string.pref_key_mono_mode_category)) as PreferenceCategory
+            mPref = BBPreference(this.requireContext())
+            mMonoModeCategory = findPreference<PreferenceCategory>(getString(R.string.pref_key_mono_mode_category))!!
 
             // Setup Discard Color
             setupDiscardColor()
@@ -60,23 +62,27 @@ class SettingsActivity : AppCompatActivity() {
 
             // Disable Cont. Auto Focus OFF - Setting
             if (mPref.isOccurredTrouble(BBPreference.TROUBLE_NO_TAP_FOCUS_ANYWAY)) {
-                val prefContAutoFocusOff = findPreference(getString(R.string.pref_key_cont_autofocus_off))
-                prefContAutoFocusOff.isEnabled = false
+                val prefContAutoFocusOff = findPreference<SwitchPreferenceCompat>(getString(R.string.pref_key_cont_autofocus_off))
+                if (prefContAutoFocusOff != null) {
+                    prefContAutoFocusOff.isEnabled = false
+                }
             }
         }
 
         private fun setupDiscardColor() {
-            val prefDiscardColorInfo = findPreference(getString(R.string.pref_key_discard_color_info))
-            prefDiscardColorInfo.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                if (newValue as Boolean) {
-                    showUsedColor()
-                    mPref.mMonoMode = true
-                } else {
-                    hideUsedColor()
-                    mPref.mMonoMode = false
+            val prefDiscardColorInfo = findPreference<SwitchPreferenceCompat>(getString(R.string.pref_key_discard_color_info))
+            if (prefDiscardColorInfo != null) {
+                prefDiscardColorInfo.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                    if (newValue as Boolean) {
+                        showUsedColor()
+                        mPref.mMonoMode = true
+                    } else {
+                        hideUsedColor()
+                        mPref.mMonoMode = false
+                    }
+                    mPref.mDiscardColorInfo = newValue
+                    true
                 }
-                mPref.mDiscardColorInfo = newValue
-                true
             }
 
             // Init
@@ -86,32 +92,38 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         private fun setupResetButton() {
-            val reset = findPreference(getString(R.string.pref_key_reset_all))
-            reset.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                AlertDialog.Builder(this.context!!)
+            val reset = findPreference<Preference>(getString(R.string.pref_key_reset_all))
+            if (reset != null) {
+                reset.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    AlertDialog.Builder(this.requireContext())
                         .setTitle(getString(R.string.pref_title_reset_message))
                         .setPositiveButton(getString(R.string.pref_title_reset_ok)){ _, _ ->
-                            BBPreference(this.context!!).resetAll()
-                            this.activity!!.recreate()
+                            BBPreference(this.requireContext()).resetAll()
+                            this.requireActivity().recreate()
                         }.setNegativeButton(getString(R.string.pref_title_reset_cancel)){ _, _ ->
                         }.show()
-                true
+                    true
+                }
             }
         }
 
         private fun setupManualButton() {
-            val manual = findPreference(getString(R.string.pref_key_manual))
-            manual.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                startActivity(Intent(activity, ManualActivity::class.java))
-                true
+            val manual = findPreference<Preference>(getString(R.string.pref_key_manual))
+            if (manual != null) {
+                manual.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    startActivity(Intent(activity, ManualActivity::class.java))
+                    true
+                }
             }
         }
 
         private fun setupPrivacyButton() {
-            val privacy = findPreference(getString(R.string.pref_key_privacy))
-            privacy.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                startActivity(Intent(activity, PrivacyActivity::class.java))
-                true
+            val privacy = findPreference<Preference>(getString(R.string.pref_key_privacy))
+            if (privacy != null) {
+                privacy.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    startActivity(Intent(activity, PrivacyActivity::class.java))
+                    true
+                }
             }
         }
 
@@ -132,7 +144,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         private fun showUsedColor() {
-            var target = findPreference(getString(R.string.pref_key_color_used))
+            var target = findPreference<Preference>(getString(R.string.pref_key_color_used))
             if (target == null){
                 // Init
                 when (mPref.mUsedColor) {
@@ -147,7 +159,8 @@ class SettingsActivity : AppCompatActivity() {
                     }
                 }
 
-                mMonoModeCategory.addPreference(ListPreference(this.activity).apply {
+                //mMonoModeCategory.addPreference(ListPreference(this.activity).apply {
+                mMonoModeCategory.addPreference(ListPreference(this.activity as Context).apply {
                     entries = resources.getStringArray(R.array.pref_color_used_list_titles)
                     entryValues = resources.getStringArray(R.array.pref_color_used_list_values)
                     layoutResource = R.layout.style_preference_info
@@ -158,35 +171,39 @@ class SettingsActivity : AppCompatActivity() {
                 })
 
                 target = findPreference(getString(R.string.pref_key_color_used))
-                target.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-                    mPref.mUsedColor = newValue.toString().toInt()
-                    target.summary = resources.getStringArray(R.array.pref_color_used_list_titles)[mPref.mUsedColor]
-                    mPref.mMonoMode = true
-                    when(mPref.mUsedColor) {
-                        7 -> {
-                            showCustomColor(1)
-                            hideCustomColor(2)
-                            hideCustomColor(3)
-                        }
-                        8 -> {
-                            hideCustomColor(1)
-                            showCustomColor(2)
-                            showCustomColor(3)
-                        }
-                        else -> {
-                            hideCustomColor(1)
-                            hideCustomColor(2)
-                            hideCustomColor(3)
-                        }
-                    }
+                if (target != null) {
+                    target.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                        mPref.mUsedColor = newValue.toString().toInt()
+                        target.summary = resources.getStringArray(R.array.pref_color_used_list_titles)[mPref.mUsedColor]
+                        mPref.mMonoMode = true
+                        when(mPref.mUsedColor) {
+                            7 -> {
+                                showCustomColor(1)
+                                hideCustomColor(2)
+                                hideCustomColor(3)
+                            }
 
-                    true
+                            8 -> {
+                                hideCustomColor(1)
+                                showCustomColor(2)
+                                showCustomColor(3)
+                            }
+
+                            else -> {
+                                hideCustomColor(1)
+                                hideCustomColor(2)
+                                hideCustomColor(3)
+                            }
+                        }
+
+                        true
+                    }
                 }
             }
         }
 
         private fun hideUsedColor() {
-            val target = findPreference(getString(R.string.pref_key_color_used))
+            val target = findPreference<Preference>(getString(R.string.pref_key_color_used))
             if (target != null) {
                 mMonoModeCategory.removePreference(target)
             }
@@ -207,10 +224,10 @@ class SettingsActivity : AppCompatActivity() {
                 else -> REQUEST_CODE_DUO_COLOR2
             }
 
-            var colorPreference = findPreference(keyStr)
+            var colorPreference = findPreference<Preference>(keyStr)
             if (colorPreference != null) return // Found (Already exists)
 
-            mMonoModeCategory.addPreference(Preference(this.activity).apply {
+            mMonoModeCategory.addPreference(Preference(this.activity as Context).apply {
                 title = when(type) {
                     1 -> getString(R.string.pref_title_custom_color)
                     2 -> getString(R.string.pref_title_custom_color_light)
@@ -224,20 +241,22 @@ class SettingsActivity : AppCompatActivity() {
             setCustomColorSummary(type)
 
             colorPreference = findPreference(keyStr)
-            colorPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val prevColor = when(type) {
-                    1 -> mPref.mCustomMonoColor
-                    2 -> mPref.mCustomDuoColor1
-                    else -> mPref.mCustomDuoColor2
-                }
+            if (colorPreference != null) {
+                colorPreference.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    val prevColor = when(type) {
+                        1 -> mPref.mCustomMonoColor
+                        2 -> mPref.mCustomDuoColor1
+                        else -> mPref.mCustomDuoColor2
+                    }
 
-                // Display the color picker
-                val intent = Intent(this.activity, ColorPickerActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                intent.putExtra("prevColor", prevColor)
-                intent.putExtra("reqCode", reqCode)
-                startActivityForResult(intent, reqCode)
-                true
+                    // Display the color picker
+                    val intent = Intent(this.activity, ColorPickerActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.putExtra("prevColor", prevColor)
+                    intent.putExtra("reqCode", reqCode)
+                    startActivityForResult(intent, reqCode)
+                    true
+                }
             }
         }
 
@@ -248,7 +267,7 @@ class SettingsActivity : AppCompatActivity() {
                 else -> getString(R.string.pref_key_custom_duo_color2)
             }
 
-            val target = findPreference(keyStr)
+            val target = findPreference<Preference>(keyStr)
             if (target != null) {
                 mMonoModeCategory.removePreference(target)
             }
@@ -266,7 +285,7 @@ class SettingsActivity : AppCompatActivity() {
                 2 -> mPref.mCustomDuoColor1
                 else -> mPref.mCustomDuoColor2
             }
-            val colorPreference = findPreference(keyStr)
+            val colorPreference = findPreference<Preference>(keyStr)
             colorPreference ?: return
 
             val r = round(Color.red(color) / 255.0f * 100.0f).toInt()

@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Gradle: io.github.ShawnLin013:number-picker:2.4.13@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2bdb1874ac0d5f9f323ca2028ea0e13c/transformed/jetified-number-picker-2.4.13/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2bdb1874ac0d5f9f323ca2028ea0e13c/transformed/jetified-number-picker-2.4.13/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2bdb1874ac0d5f9f323ca2028ea0e13c/transformed/jetified-number-picker-2.4.13/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2bdb1874ac0d5f9f323ca2028ea0e13c/transformed/jetified-number-picker-2.4.13/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.ShawnLin013/number-picker/2.4.13/d3b3759bb4586cff8ad7c4084f78b17b0821e32c/number-picker-2.4.13-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.ShawnLin013/number-picker/2.4.13/63dc3389540008c08fd38308b400905345f3b1ff/number-picker-2.4.13-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

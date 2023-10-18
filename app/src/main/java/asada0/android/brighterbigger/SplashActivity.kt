@@ -2,8 +2,8 @@
 //  SplashActivity.kt
 //  Brighter and Bigger
 //
-//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2019/08/05.
-//  Copyright 2010-2019 Kazunori Asada. All rights reserved.
+//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2023/10/08.
+//  Copyright 2010-2023 Kazunori Asada. All rights reserved.
 //
 
 package asada0.android.brighterbigger
@@ -14,7 +14,9 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-import kotlinx.android.synthetic.main.activity_splash.*
+import android.widget.TextView
+
+//import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
     companion object {
@@ -33,7 +35,8 @@ class SplashActivity : AppCompatActivity() {
         window?.decorView?.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
-        textVersion.text = String.format("Ver. %s", BuildConfig.VERSION_NAME)
+        val textVersionView = findViewById<TextView>(R.id.textVersion)
+        textVersionView.text = String.format("Ver. %s", BuildConfig.VERSION_NAME)
     }
 
     override fun onResume() {

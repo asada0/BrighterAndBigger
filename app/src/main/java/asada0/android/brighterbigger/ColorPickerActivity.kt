@@ -2,8 +2,8 @@
 //  ColorPickerActivity.kt
 //  Brighter and Bigger
 //
-//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2019/08/05.
-//  Copyright 2010-2019 Kazunori Asada. All rights reserved.
+//  Created by Kazunori Asada, Masataka Matsuda and Hirofumi Ukawa on 2023/10/08.
+//  Copyright 2010-2023 Kazunori Asada. All rights reserved.
 //
 
 package asada0.android.brighterbigger
@@ -11,11 +11,13 @@ package asada0.android.brighterbigger
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_color_picker.*
 import kotlin.math.round
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
+import android.view.View
+import android.widget.GridView
+import android.widget.TextView
 import kotlin.math.max
 
 class ColorPickerActivity : AppCompatActivity() {
@@ -34,8 +36,9 @@ class ColorPickerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_color_picker)
         dispSelectedColor(mPrevColor)
 
-        color_grid.setOnItemClickListener { _, view, position, _ ->
-            color_grid.setSelection(position)
+        val colorGrid = findViewById<GridView>(R.id.color_grid)
+        colorGrid.setOnItemClickListener { _, view, position, _ ->
+            colorGrid.setSelection(position)
             mSelectedColor = mColorPickerAdapter.getColor(position)
             dispSelectedColor(mSelectedColor)
 
@@ -52,11 +55,12 @@ class ColorPickerActivity : AppCompatActivity() {
             if (mPrevPosition == -1) {
                 mPrevPosition = max(mColorPickerAdapter.getColorToPosition(mPrevColor), 0)
             }
-            color_grid.getChildAt(mPrevPosition).setBackgroundColor(mColorPickerAdapter.getColor(mPrevPosition))
+            colorGrid.getChildAt(mPrevPosition).setBackgroundColor(mColorPickerAdapter.getColor(mPrevPosition))
             mPrevPosition = position
         }
 
-        color_save.setOnClickListener {
+        val colorSave = findViewById<TextView>(R.id.color_save)
+        colorSave.setOnClickListener {
             mPrevColor = mSelectedColor
             when(mReqCode) {
                 SettingsActivity.REQUEST_CODE_MONO_COLOR -> {
@@ -75,7 +79,8 @@ class ColorPickerActivity : AppCompatActivity() {
             finish()
         }
 
-        color_cancel.setOnClickListener {
+        val colorCancel = findViewById<TextView>(R.id.color_cancel)
+        colorCancel.setOnClickListener {
             val intent = Intent()
             setResult(SettingsActivity.RESULT_CANCEL, intent)
             finish()
@@ -84,19 +89,24 @@ class ColorPickerActivity : AppCompatActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        mColorPickerAdapter = ColorPickerAdapter(this, color_grid.width, color_grid.height, mPrevColor)
+        val colorGrid = findViewById<GridView>(R.id.color_grid)
+        mColorPickerAdapter = ColorPickerAdapter(this, colorGrid.width, colorGrid.height, mPrevColor)
         dispSelectedColor(mPrevColor)
-        color_grid.adapter = mColorPickerAdapter
+        colorGrid.adapter = mColorPickerAdapter
     }
 
     private fun dispSelectedColor(color:Int) {
+        val colorR = findViewById<TextView>(R.id.color_r)
+        val colorG = findViewById<TextView>(R.id.color_g)
+        val colorB = findViewById<TextView>(R.id.color_b)
+        val colorSample = findViewById<View>(R.id.color_sample)
         val r = round(Color.red(color) / 255.0f * 100.0f).toInt()
         val g = round(Color.green(color) / 255.0f * 100.0f).toInt()
         val b = round(Color.blue(color) / 255.0f * 100.0f).toInt()
-        color_r.text = String.format("R: %3d%%", r)
-        color_g.text = String.format("G: %3d%%", g)
-        color_b.text = String.format("B: %3d%%", b)
-        color_sample.setBackgroundColor(color)
+        colorR.text = String.format("R: %3d%%", r)
+        colorG.text = String.format("G: %3d%%", g)
+        colorB.text = String.format("B: %3d%%", b)
+        colorSample.setBackgroundColor(color)
     }
 
     override fun onSaveInstanceState(saveInstanceState: Bundle) {
