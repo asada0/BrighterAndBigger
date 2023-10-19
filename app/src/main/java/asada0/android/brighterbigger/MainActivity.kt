@@ -1730,7 +1730,15 @@ class MainActivity : Activity(), SensorEventListener {
                 }
             }
         }
-        registerReceiver(mBroadCastReceiverSave, IntentFilter(BBGLRenderer.INTENT_SAVE))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(
+                mBroadCastReceiverSave,
+                IntentFilter(BBGLRenderer.INTENT_SAVE),
+                RECEIVER_NOT_EXPORTED
+            )
+        } else {
+            registerReceiver(mBroadCastReceiverSave, IntentFilter(BBGLRenderer.INTENT_SAVE))
+        }
         startService(Intent(application, MainActivity::class.java))
     }
 
@@ -1945,7 +1953,11 @@ class MainActivity : Activity(), SensorEventListener {
                 setImageFreezing(bitmap2)
             }
         }
-        registerReceiver(mBroadCastReceiverFreeze, IntentFilter(BBCamera.INTENT_FREEZE))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(mBroadCastReceiverFreeze, IntentFilter(BBCamera.INTENT_FREEZE), RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(mBroadCastReceiverFreeze, IntentFilter(BBCamera.INTENT_FREEZE))
+        }
         startService(Intent(application, MainActivity::class.java))
     }
 
@@ -1954,7 +1966,7 @@ class MainActivity : Activity(), SensorEventListener {
             try {
                 unregisterReceiver(mBroadCastReceiverFreeze)
                 mBroadCastReceiverFreeze = null
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
     }
@@ -1997,7 +2009,15 @@ class MainActivity : Activity(), SensorEventListener {
                 }
             }
         }
-        registerReceiver(mBroadCastReceiverCameraTrouble, IntentFilter(BBCamera.INTENT_CAMERA_TROUBLE))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(
+                mBroadCastReceiverCameraTrouble,
+                IntentFilter(BBCamera.INTENT_CAMERA_TROUBLE),
+                RECEIVER_NOT_EXPORTED
+            )
+        } else {
+            registerReceiver(mBroadCastReceiverCameraTrouble, IntentFilter(BBCamera.INTENT_CAMERA_TROUBLE))
+        }
         startService(Intent(application, MainActivity::class.java))
     }
 
@@ -2006,7 +2026,7 @@ class MainActivity : Activity(), SensorEventListener {
             try {
                 unregisterReceiver(mBroadCastReceiverCameraTrouble)
                 mBroadCastReceiverCameraTrouble = null
-            } catch (e: Exception) {
+            } catch (_: Exception) {
             }
         }
     }
