@@ -2643,7 +2643,7 @@ public class NumberPicker extends LinearLayout {
 
     private float pxToSp(float px) {
         // return px / getResources().getDisplayMetrics().scaledDensity;
-        var scaledDensity = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+        float scaledDensity = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
         return px / scaledDensity;
     }
 

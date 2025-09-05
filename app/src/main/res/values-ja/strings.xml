@@ -100,7 +100,7 @@
 
     <string name="pref_category_application_info">アプリケーション情報</string>
     <string name="pref_title_version">バージョン</string>
-    <string name="pref_title_copyright">Copyright © 2019</string>
+    <string name="pref_title_copyright">Copyright © 2018-2025</string>
     <string name="author">Kazunori Asada</string>
 
     <string name="pref_title_color_used">使用する色</string>

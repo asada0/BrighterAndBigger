@@ -10,7 +10,12 @@ package asada0.android.brighterbigger
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ViewGroup
 import android.webkit.WebView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 
 //import kotlinx.android.synthetic.main.activity_manual.*
 
@@ -20,7 +25,33 @@ class ManualActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manual)
 
+        optimizeEdgeToEdge()
+
         val manualView = findViewById<WebView>(R.id.manual_view)
         manualView.loadUrl("file:///android_asset/" + getString(R.string.pref_manual_html))
+    }
+
+    private fun optimizeEdgeToEdge() {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.manual_view)) { root, windowInsets ->
+            /*
+            var actionBarHeight: Int = 0
+            val tv = TypedValue()
+            if (this.theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
+            }
+             */
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+            root.updatePadding(
+                top = 0,
+                left = insets.left,
+                right = insets.right,
+                bottom = insets.bottom,
+            )
+            root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                //topMargin = actionBarHeight
+                topMargin = insets.top
+            }
+            WindowInsetsCompat.CONSUMED
+        }
     }
 }

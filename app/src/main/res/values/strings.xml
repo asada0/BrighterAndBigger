@@ -4,7 +4,7 @@
     <string name="splash_name">Brighter and Bigger</string>
     <string name="app_version">@string/versionName</string>
     <string name="app_description">For reading small letters</string>
-    <string name="app_copyright">Copyright 2019 Kazunori Asada.</string>
+    <string name="app_copyright">Copyright 2018-2025 Kazunori Asada.</string>
     <string name="app_allrights">All rights reserved.</string>
 
     <string name="sFormatBrighter"> %+d Brighter</string>
@@ -100,7 +100,7 @@
 
     <string name="pref_category_application_info">APPLICATION INFO.</string>
     <string name="pref_title_version">Version</string>
-    <string name="pref_title_copyright">Copyright © 2019</string>
+    <string name="pref_title_copyright">Copyright © 2025</string>
     <string name="author">Kazunori Asada</string>
 
     <string name="pref_title_color_used">Color(s) Used</string>

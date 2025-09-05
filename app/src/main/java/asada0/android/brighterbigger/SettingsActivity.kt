@@ -12,8 +12,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
@@ -33,10 +38,37 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+
+        optimizeEdgeToEdge()
+
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.settingsContainer, SettingPreferenceFragment())
                 .commit()
+    }
+
+    private fun optimizeEdgeToEdge() {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.settingsContainer)) { root, windowInsets ->
+            /*
+            var actionBarHeight: Int = 0
+            val tv = TypedValue()
+            if (this.theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
+            }
+             */
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+            root.updatePadding(
+                top = 0,
+                left = insets.left,
+                right = insets.right,
+                bottom = insets.bottom,
+            )
+            root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                //topMargin = actionBarHeight
+                topMargin = insets.top
+            }
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     class SettingPreferenceFragment : PreferenceFragmentCompat() {

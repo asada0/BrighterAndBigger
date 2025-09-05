@@ -16,8 +16,13 @@ import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.view.View
+import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import kotlin.math.max
 
 class ColorPickerActivity : AppCompatActivity() {
@@ -34,6 +39,9 @@ class ColorPickerActivity : AppCompatActivity() {
         mPrevColor = intent.getIntExtra("prevColor", 0)
         mReqCode = intent.getIntExtra("reqCode", SettingsActivity.REQUEST_CODE_MONO_COLOR)
         setContentView(R.layout.activity_color_picker)
+
+        optimizeEdgeToEdge()
+
         dispSelectedColor(mPrevColor)
 
         val colorGrid = findViewById<GridView>(R.id.color_grid)
@@ -84,6 +92,30 @@ class ColorPickerActivity : AppCompatActivity() {
             val intent = Intent()
             setResult(SettingsActivity.RESULT_CANCEL, intent)
             finish()
+        }
+    }
+
+    private fun optimizeEdgeToEdge() {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.color_picker_view)) { root, windowInsets ->
+            /*
+            var actionBarHeight: Int = 0
+            val tv = TypedValue()
+            if (this.theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
+            }
+             */
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+            root.updatePadding(
+                top = 0,
+                left = insets.left,
+                right = insets.right,
+                bottom = insets.bottom,
+            )
+            root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                //topMargin = actionBarHeight
+                topMargin = insets.top
+            }
+            WindowInsetsCompat.CONSUMED
         }
     }
 
