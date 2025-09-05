@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">明るく大きく</string>
+    <string name="splash_name">明るく大きく</string>
+    <string name="app_version">@string/versionName</string>
+    <string name="app_description">小さな字が読みにくい人のために</string>
+    <string name="app_copyright">Copyright 2025 Kazunori Asada.</string>
+    <string name="app_allrights">All rights reserved.</string>
+
+    <string name="sFormatBrighter">明るく%+d </string>
+    <string name="sFormatBigger">大きく%.1f</string>
+    <string name="sFormatClearer">くっきり%d </string>
+
+    <string name="sFormatBrighterNumber">%+d</string>
+    <string name="sFormatBiggerNumber">%.1f</string>
+    <string name="sFormatClearerNumber">%+d</string>
+
+    <string name="sStatusBrighter">明るく</string>
+    <string name="sStatusBigger">大きく</string>
+    <string name="sStatusClearer">くっきり</string>
+
+    <string name="sBrightnessPicker">明るくダイヤル</string>
+    <string name="sMagnificationPicker">大きくダイヤル</string>
+    <string name="sContrastPicker">くっきりダイヤル</string>
+
+    <string name="sButtonSettings">設定</string>
+    <string name="sButtonProjection">斜め上から補正</string>
+    <string name="sButtonLight">トーチ</string>
+    <string name="sButtonAutoFocus">継続オートフォーカスオフ</string>
+    <string name="sButtonPause">フリーズ</string>
+    <string name="sButtonReverse">明度反転</string>
+    <string name="sButtonSave">保存</string>
+    <string name="sButtonImageSource">イメージソース</string>
+
+    <string name="sIconBrighter">明るくアイコン</string>
+    <string name="sIconBigger">大きくアイコン</string>
+    <string name="sIconClearer">くっきりアイコン</string>
+
+    <string name="sBrighterNumber">明るくの値</string>
+    <string name="sBiggerNumber">大きくの値</string>
+    <string name="sClearerNumber">くっきりの値</string>
+
+    <string name="sProjectionPinchArea">斜め上から操作エリア</string>
+    <string name="sManualView">マニュアル</string>
+    <string name="sPrivacyView">プライバシーポリシー</string>
+
+    <string name="sDismiss">了解</string>
+    <string name="sCameraError">カメラエラー</string>
+    <string name="sFreezeError">静止エラー</string>
+    <string name="sFileLoadError">画像読込エラー</string>
+    <string name="sFileSaveError">画像保存エラー</string>
+    <string name="sCameraReason">カメラ画像を得るためにカメラを使用します。</string>
+    <string name="sStorageReason">画像の保存のために外部ストレージを使用できます。</string>
+    <string name="sSoundError">サウンドエラー</string>
+    <string name="sNoTapFocusOnContinuousModeTitle">タップフォーカスエラー</string>
+    <string name="sNoTapFocusOnContinuousModeMessage">このデバイスは、継続オートフォーカス中のタップフォーカスができません。当機能はOFFになりました。</string>
+    <string name="sNoTapFocusAnywayTitle">タップフォーカスエラー</string>
+    <string name="sNoTapFocusAnywayMessage">このデバイスは、タップフォーカスができません。当機能はOFFになりました</string>
+
+    <string name="sCameraFileSwap">カメラ・ファイル切替</string>
+    <string name="sRearCamera">リアカメラ</string>
+    <string name="sFrontCamera">フロントカメラ</string>
+    <string name="sFile">ファイル</string>
+
+    <string name="sColorPickerCancel">キャンセル</string>
+    <string name="sColorPickerTitle">カラー情報</string>
+    <string name="sColorPickerSave">保存</string>
+
+    <string name="title_activity_settings">設定</string>
+
+    <string name="pref_header_monochrome_mode">モノクロームモード</string>
+    <string name="pref_title_discard_color_info">カラー情報を破棄</string>
+    <string name="pref_monochrome_footer">カラー情報を破棄し、明度情報のみを使用します。（眼の病気などで文字が読みにくい人向け）</string>
+    <string name="pref_title_use_color">使用する色</string>
+    <string name="pref_title_custom_color">カスタムカラー</string>
+    <string name="pref_title_custom_color_light">カスタムカラー（明）</string>
+    <string name="pref_title_custom_color_dark">カスタムカラー（暗）</string>
+
+    <string name="pref_header_user_interface">ユーザインターフェイス設定</string>
+    <string name="pref_title_tone_rotation">2本指2タップで切替</string>
+    <string name="pref_title_big_icons">大きな文字とボタン</string>
+    <string name="pref_title_long_press_freeze">長押しで静止</string>
+    <string name="pref_title_volume_button_shutter">音量ボタンで保存</string>
+    <string name="pref_title_max_zoom_2x">ズーム最大倍率を20倍</string>
+    <string name="pref_title_cont_autofocus_off">継続オートフォーカスOFF</string>
+    <string name="pref_title_tilted_angle">斜め上から補正の程度</string>
+    <string name="pref_title_tilted_angle_summary">スクリーン下部のピンチでも調整できます。</string>
+
+    <string name="pref_category_other">その他</string>
+    <string name="pref_title_reset_message">すべての設定を初期値に戻します。</string>
+    <string name="pref_title_reset_ok">OK</string>
+    <string name="pref_title_reset_cancel">キャンセル</string>
+    <string name="pref_title_reset">リセット</string>
+
+    <string name="pref_title_how_to_use">マニュアル表示</string>
+    <string name="pref_manual_html">manual_ja.html</string>
+
+    <string name="pref_title_privacy">プライバシーポリシー</string>
+    <string name="pref_privacy_html">privacy_ja.html</string>
+
+    <string name="pref_category_application_info">アプリケーション情報</string>
+    <string name="pref_title_version">バージョン</string>
+    <string name="pref_title_copyright">Copyright © 2019</string>
+    <string name="author">Kazunori Asada</string>
+
+    <string name="pref_title_color_used">使用する色</string>
+    <string name="pref_color_used_original_title">オリジナル</string>
+    <string-array name="pref_color_used_list_titles">
+        <item>無彩色（白黒）</item>
+        <item>黄</item>
+        <item>水色</item>
+        <item>緑</item>
+        <item>セピア</item>
+        <item>黄と青</item>
+        <item>青緑と赤</item>
+        <item>カスタム（1色）</item>
+        <item>カスタム（2色）</item>
+    </string-array>
+</resources>

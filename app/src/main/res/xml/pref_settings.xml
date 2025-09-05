@@ -1,0 +1,115 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="@string/pref_key_mono_mode_category"
+        app:title="@string/pref_header_monochrome_mode"
+        app:layout="@layout/style_preference_category">
+        <SwitchPreferenceCompat
+            app:order="0"
+            app:layout="@layout/style_switch_preference"
+            app:defaultValue="false"
+            app:key="@string/pref_key_discard_color_info"
+            app:title="@string/pref_title_discard_color_info" />
+
+        <SwitchPreferenceCompat
+            app:layout="@layout/style_switch_preference"
+            app:order="10"
+            android:textSize="10sp"
+            app:defaultValue="false"
+            app:key="@string/pref_key_tone_rotation"
+            app:title="@string/pref_title_tone_rotation" />
+        <Preference
+            app:layout="@layout/style_preference_info_only"
+            app:order="100"
+            app:summary="@string/pref_monochrome_footer" />
+
+    </PreferenceCategory>
+
+
+
+    <PreferenceCategory
+        app:key="@string/pref_key_user_interface_category"
+        app:title="@string/pref_header_user_interface"
+        app:layout="@layout/style_preference_category">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:layout="@layout/style_switch_preference"
+            app:key="@string/pref_key_big_icons"
+            app:title="@string/pref_title_big_icons" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:layout="@layout/style_switch_preference"
+            app:key="@string/pref_key_long_press_freeze"
+            app:title="@string/pref_title_long_press_freeze" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:layout="@layout/style_switch_preference"
+            app:key="@string/pref_key_volume_button_shutter"
+            app:title="@string/pref_title_volume_button_shutter" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:layout="@layout/style_switch_preference"
+            app:key="@string/pref_key_max_zoom_2x"
+            app:title="@string/pref_title_max_zoom_2x" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:layout="@layout/style_switch_preference"
+            app:key="@string/pref_key_cont_autofocus_off"
+            app:title="@string/pref_title_cont_autofocus_off" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_title_tilted_angle"
+        app:layout="@layout/style_preference_category">
+        <SeekBarPreference
+            android:key="@string/pref_key_projection_bottom_ratio_int"
+            android:max="80"
+            app:min="0"
+            android:defaultValue="30"
+            app:showSeekBarValue="false" />
+        <Preference
+            app:layout="@layout/style_preference_info_only"
+            android:summary="@string/pref_title_tilted_angle_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_category_other"
+        app:layout="@layout/style_preference_category">
+
+        <Preference
+            app:layout="@layout/style_preference_info"
+            app:key="@string/pref_key_reset_all"
+            app:title="@string/pref_title_reset"
+            app:summary="@string/pref_title_reset_message" />
+        <Preference
+            app:layout="@layout/style_preference_info"
+            app:key="@string/pref_key_manual"
+            app:title="@string/pref_title_how_to_use"
+            app:summary=">" />
+        <Preference
+            app:layout="@layout/style_preference_info"
+            app:key="@string/pref_key_privacy"
+            app:title="@string/pref_title_privacy"
+            app:summary=">" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_category_application_info"
+        app:layout="@layout/style_preference_category">
+        <Preference
+            app:layout="@layout/style_preference_info"
+            app:title="@string/pref_title_version"
+            app:summary="@string/app_version" />
+        <Preference
+            app:layout="@layout/style_preference_info"
+            app:title="@string/pref_title_copyright"
+            app:summary="@string/author" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
