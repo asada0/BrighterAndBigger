@@ -1920,8 +1920,7 @@ class MainActivity : Activity(), SensorEventListener {
         values.clear()
         values.put(MediaStore.Images.Media.IS_PENDING, 0)
         contentResolver.update(uri, values, null, null)
-
-        sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
+        //sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))　// 2025/09/07
         mError!!.log(tag,"Saved \"$fileName\".")
 
         return true

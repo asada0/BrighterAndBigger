@@ -16,11 +16,14 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.PointF
+import android.hardware.display.DisplayManager
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.util.Size
+import android.view.Display
 import android.view.Surface
 import android.view.WindowManager
+import androidx.core.content.ContextCompat.getSystemService
 import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -156,12 +159,14 @@ open class BBGLRenderer(context: Context, activity: Activity) : GLSurfaceView.Re
     }
 
     private fun getDisplayRotation(): Int {
-        return when ((mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation) {
-            Surface.ROTATION_0 -> 0 // Display rotation: 0 (Portrait on Smartphone)
-            Surface.ROTATION_90 -> 1 // Display rotation: 90 (Landscape Left on Smartphone)
-            Surface.ROTATION_180 -> 2 // Display rotation: 180 (Portrait Upside down on Smartphone)
-            Surface.ROTATION_270 -> 3 // Display rotation: 270 (Landscape Right on Smartphone)
-            else -> 0
+        //return when ((mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation) {
+        val rotation: Int = (mContext.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager).getDisplay(Display.DEFAULT_DISPLAY).rotation
+        return when (rotation) {
+                Surface.ROTATION_0 -> 0 // Display rotation: 0 (Portrait on Smartphone)
+                Surface.ROTATION_90 -> 1 // Display rotation: 90 (Landscape Left on Smartphone)
+                Surface.ROTATION_180 -> 2 // Display rotation: 180 (Portrait Upside down on Smartphone)
+                Surface.ROTATION_270 -> 3 // Display rotation: 270 (Landscape Right on Smartphone)
+                else -> 0
         }
     }
 
@@ -187,7 +192,8 @@ open class BBGLRenderer(context: Context, activity: Activity) : GLSurfaceView.Re
 
     private fun isPortraitDevice(): Boolean {
         val pIsDisplayOrientationPortrait: Boolean = mContext.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-        val pDisplayRotation: Int = (mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation
+        //val pDisplayRotation: Int = (mContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.rotation
+        val pDisplayRotation: Int = (mContext.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager).getDisplay(Display.DEFAULT_DISPLAY).rotation // 2025/09/07
         // Is this device's default orientation Portrait? Smart phone type device -> true, Tablet type device -> false
         return if (pIsDisplayOrientationPortrait) pDisplayRotation == Surface.ROTATION_0 || pDisplayRotation == Surface.ROTATION_180 else pDisplayRotation == Surface.ROTATION_90 || pDisplayRotation == Surface.ROTATION_270
     }
@@ -424,7 +430,10 @@ open class BBGLRenderer(context: Context, activity: Activity) : GLSurfaceView.Re
     */
 
     private fun sendReadyToSaveIntent() {
-        mContext.sendBroadcast(Intent(INTENT_SAVE))
+        val intent = Intent(INTENT_SAVE)
+        intent.setPackage(mContext.packageName)
+        //mContext.sendBroadcast(Intent(INTENT_FILTER))
+        mContext.sendBroadcast(intent) // 2025/09/07
     }
 
     fun maxTextureSize(): Int {
