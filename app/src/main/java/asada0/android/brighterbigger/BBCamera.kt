@@ -207,6 +207,7 @@ class BBCamera(activity: Activity, textureID: Int) {
             mError.log(tag, "Camera error - Exception in createCaptureSession/createCaptureRequest(1)")
             closeCameraForce()
         }
+
         mPreviewBuilder!!.addTarget(surface)
         // End for Preview
         // for Freeze capture
